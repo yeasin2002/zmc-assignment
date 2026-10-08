@@ -55,15 +55,15 @@ The primary focus is **not** on complex UI visual effects, but on:
 
 ## 2. Technology Stack
 
-| Layer                | Technology                                                         | Specification / Requirement                   |
-| -------------------- | ------------------------------------------------------------------ | --------------------------------------------- |
-| **Frontend**         | [Next.js](https://nextjs.org/)                                     | App Router or Pages Router with TypeScript    |
-| **Backend**          | [NestJS](https://nestjs.com/)                                      | Modular architecture with TypeScript          |
-| **Language**         | [TypeScript](https://www.typescriptlang.org/)                      | Strict typing across backend and frontend     |
-| **Database**         | [PostgreSQL](https://www.postgresql.org/)                          | Relational database schema with migrations    |
-| **ORM**              | [Prisma](https://www.prisma.io/)  | Schema definitions, relations, and migrations |
-| **API Architecture** | REST API                                                           | Clean HTTP status codes and predictable paths |
-| **Authentication**   | JWT (JSON Web Tokens)                                              | Secure token-based authentication             |
+| Layer                | Technology                                    | Specification / Requirement                   |
+| -------------------- | --------------------------------------------- | --------------------------------------------- |
+| **Frontend**         | [Next.js](https://nextjs.org/)                | App Router or Pages Router with TypeScript    |
+| **Backend**          | [NestJS](https://nestjs.com/)                 | Modular architecture with TypeScript          |
+| **Language**         | [TypeScript](https://www.typescriptlang.org/) | Strict typing across backend and frontend     |
+| **Database**         | [PostgreSQL](https://www.postgresql.org/)     | Relational database schema with migrations    |
+| **ORM**              | [Prisma](https://www.prisma.io/)              | Schema definitions, relations, and migrations |
+| **API Architecture** | REST API                                      | Clean HTTP status codes and predictable paths |
+| **Authentication**   | JWT (JSON Web Tokens)                         | Secure token-based authentication             |
 
 > [!NOTE]
 > You may use helper libraries (e.g. `class-validator`, `class-transformer`, Tailwind CSS, UI component libraries, etc.), but the core technologies above must be used.
@@ -460,7 +460,7 @@ Your final submission must include:
    - Test account credentials.
    - Documented trade-offs, assumptions, and known limitations.
 3. **Database Migrations:**
-   - Valid Prisma  migration files committed in git.
+   - Valid Prisma migration files committed in git.
 4. **Seed Script:**
    - Functional database seeding script.
 5. **API Documentation:**
