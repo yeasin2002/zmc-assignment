@@ -1,7 +1,7 @@
 # Project & Task Management System
 
 > **Role Level:** Mid-Level Full-Stack Developer  
-> **Core Stack:** Next.js, NestJS, PostgreSQL, TypeScript, Prisma / TypeORM  
+> **Core Stack:** Next.js, NestJS, PostgreSQL, TypeScript, Prisma
 > **Duration:** 5 Working Days
 
 ---
@@ -61,7 +61,7 @@ The primary focus is **not** on complex UI visual effects, but on:
 | **Backend**          | [NestJS](https://nestjs.com/)                                      | Modular architecture with TypeScript          |
 | **Language**         | [TypeScript](https://www.typescriptlang.org/)                      | Strict typing across backend and frontend     |
 | **Database**         | [PostgreSQL](https://www.postgresql.org/)                          | Relational database schema with migrations    |
-| **ORM**              | [Prisma](https://www.prisma.io/) or [TypeORM](https://typeorm.io/) | Schema definitions, relations, and migrations |
+| **ORM**              | [Prisma](https://www.prisma.io/)  | Schema definitions, relations, and migrations |
 | **API Architecture** | REST API                                                           | Clean HTTP status codes and predictable paths |
 | **Authentication**   | JWT (JSON Web Tokens)                                              | Secure token-based authentication             |
 
@@ -322,7 +322,7 @@ GET    /api/dashboard/stats
 
 ## 11. Database Design
 
-Use **PostgreSQL** with either **Prisma** or **TypeORM**.
+Use **PostgreSQL** with either **Prisma**.
 
 ### Entity Relationship Model
 
@@ -460,7 +460,7 @@ Your final submission must include:
    - Test account credentials.
    - Documented trade-offs, assumptions, and known limitations.
 3. **Database Migrations:**
-   - Valid Prisma or TypeORM migration files committed in git.
+   - Valid Prisma  migration files committed in git.
 4. **Seed Script:**
    - Functional database seeding script.
 5. **API Documentation:**
