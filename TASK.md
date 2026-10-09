@@ -32,18 +32,18 @@ A streamlined, phased task list tracking completed milestones and remaining deli
 
 ## Phase 3: Project Management & Access Control (`ProjectsModule`)
 
-- [ ] Create project DTOs (`CreateProjectDto`, `UpdateProjectDto`, `AddMemberDto`)
-- [ ] Implement project CRUD endpoints:
+- [x] Create project DTOs (`CreateProjectDto`, `UpdateProjectDto`, `AddMemberDto`)
+- [x] Implement project CRUD endpoints:
   - `GET /api/projects` (projects user belongs to or owns)
   - `POST /api/projects` (creates project and sets user as owner)
   - `GET /api/projects/:id` (project details)
   - `PATCH /api/projects/:id` (update project - owner only)
   - `DELETE /api/projects/:id` (delete project - owner only)
-- [ ] Implement member management endpoints:
+- [x] Implement member management endpoints:
   - `GET /api/projects/:id/members`
   - `POST /api/projects/:id/members` (add registered user - owner only)
   - `DELETE /api/projects/:id/members/:userId` (remove member - owner only)
-- [ ] Implement backend authorization guards:
+- [x] Implement backend authorization guards:
   - `ProjectMemberGuard` (verify user is member/owner of requested project)
   - `ProjectOwnerGuard` (verify user is owner for administrative actions)
   - Prevent unauthorized cross-project access (URL tampering prevention)
