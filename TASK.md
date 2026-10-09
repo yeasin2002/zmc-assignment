@@ -52,15 +52,15 @@ A streamlined, phased task list tracking completed milestones and remaining deli
 
 ## Phase 4: Task Management & Query Operations (`TasksModule`)
 
-- [ ] Create task DTOs (`CreateTaskDto`, `UpdateTaskDto`, `TaskQueryDto`)
-- [ ] Implement task CRUD endpoints:
+- [x] Create task DTOs (`CreateTaskDto`, `UpdateTaskDto`,  `TaskQueryDto`)
+- [x] Implement task CRUD endpoints:
   - `GET /api/projects/:id/tasks` (search, filter, sort, paginate)
   - `POST /api/projects/:id/tasks` (create task inside project)
   - `GET /api/tasks/:id` (task details)
   - `PATCH /api/tasks/:id` (update task status, priority, assignee, details)
   - `DELETE /api/tasks/:id` (delete task)
-- [ ] Enforce assignment validation in service layer (assignee must be an active project member)
-- [ ] Implement database-level task querying:
+- [x] Enforce assignment validation in service layer (assignee must be an active project member)
+- [x] Implement database-level task querying:
   - Case-insensitive search by title
   - Filter by `status` (`TODO`, `IN_PROGRESS`, `DONE`)
   - Filter by `priority` (`LOW`, `MEDIUM`, `HIGH`)
