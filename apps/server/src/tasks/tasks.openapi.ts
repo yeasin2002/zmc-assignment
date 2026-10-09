@@ -3,7 +3,7 @@ import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@ne
 import { ApiStandardErrors } from '../common/decorators/api-errors.decorator.js';
 
 export const TasksOpenApi = {
-  controller: () => applyDecorators(ApiTags('Tasks'), ApiBearerAuth()),
+  controller: () => applyDecorators(ApiTags('Tasks'), ApiBearerAuth('JWT-auth')),
 
   listProjectTasks: () =>
     applyDecorators(
