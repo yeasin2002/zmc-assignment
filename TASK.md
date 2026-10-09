@@ -13,6 +13,7 @@ A streamlined, phased task list tracking completed milestones and remaining deli
 - [x] Implement NestJS `PrismaService` and `PrismaModule`
 - [x] Create automated database seed script with sample users, projects, and tasks (`pnpm run seed`)
 - [x] Verify database connection and relational queries with integration tests
+- [x] Setup Swagger / OpenAPI documentation (`@nestjs/swagger`) at `/api/docs`
 
 ---
 
@@ -75,7 +76,6 @@ A streamlined, phased task list tracking completed milestones and remaining deli
   - Project counts: Total projects, active projects
   - Task counts: Total tasks, completed tasks, pending tasks, high-priority tasks
 - [ ] Implement global HTTP exception filter for consistent error responses
-- [ ] Setup Swagger / OpenAPI documentation (`@nestjs/swagger`) at `/api/docs`
 
 ---
 
