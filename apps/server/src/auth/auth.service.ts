@@ -25,9 +25,7 @@ export class AuthService {
   async register(dto: RegisterDto): Promise<AuthResponse> {
     const existing = await this.usersService.findByEmail(dto.email);
     if (existing) {
-      throw new ConflictException(
-        'An account with this email address already exists',
-      );
+      throw new ConflictException('An account with this email address already exists');
     }
 
     const hashedPassword = await bcrypt.hash(dto.password, 10);
@@ -37,16 +35,9 @@ export class AuthService {
       password: hashedPassword,
     });
 
-    const accessToken = this.jwtService.sign({
-      sub: createdUser.id,
-      email: createdUser.email,
-    });
-
+    const accessToken = this.jwtService.sign({ sub: createdUser.id, email: createdUser.email });
     const { password: _password, ...user } = createdUser;
-    return {
-      accessToken,
-      user,
-    };
+    return { accessToken, user };
   }
 
   async login(dto: LoginDto): Promise<AuthResponse> {
@@ -60,16 +51,9 @@ export class AuthService {
       throw new UnauthorizedException('Invalid email or password');
     }
 
-    const accessToken = this.jwtService.sign({
-      sub: user.id,
-      email: user.email,
-    });
-
+    const accessToken = this.jwtService.sign({ sub: user.id, email: user.email });
     const { password: _password, ...safeUser } = user;
-    return {
-      accessToken,
-      user: safeUser,
-    };
+    return { accessToken, user: safeUser };
   }
 
   async getProfile(userId: string): Promise<SafeUser> {

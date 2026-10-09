@@ -20,9 +20,7 @@ describe('PrismaService', () => {
   });
 
   it('should connect to the PostgreSQL database', async () => {
-    const result = await prisma.$queryRaw<
-      Array<{ result: number }>
-    >`SELECT 1 as result`;
+    const result = await prisma.$queryRaw<Array<{ result: number }>>`SELECT 1 as result`;
     expect(result[0]?.result).toBe(1);
   });
 

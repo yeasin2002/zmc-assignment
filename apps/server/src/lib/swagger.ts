@@ -19,10 +19,7 @@ export function setupSwagger(app: INestApplication): void {
       },
       'JWT-auth',
     )
-    .addTag(
-      'Authentication',
-      'User registration, login, and profile operations',
-    )
+    .addTag('Authentication', 'User registration, login, and profile operations')
     .addTag('Projects', 'Project workspaces and member management')
     .addTag('Tasks', 'Task lifecycle, assignments, and query operations')
     .addTag('Dashboard', 'Summary statistics and workload analytics')

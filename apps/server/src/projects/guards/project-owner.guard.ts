@@ -40,9 +40,7 @@ export class ProjectOwnerGuard implements CanActivate {
     });
 
     if (!membership || membership.role !== ProjectRole.OWNER) {
-      throw new ForbiddenException(
-        'Only the project owner has permission to perform this action',
-      );
+      throw new ForbiddenException('Only the project owner has permission to perform this action');
     }
 
     request.project = project;

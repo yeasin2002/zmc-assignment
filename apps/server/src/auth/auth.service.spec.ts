@@ -50,9 +50,7 @@ describe('AuthService', () => {
         password: 'Password123!',
       });
 
-      expect(usersService.findByEmail).toHaveBeenCalledWith(
-        'newuser@example.com',
-      );
+      expect(usersService.findByEmail).toHaveBeenCalledWith('newuser@example.com');
       expect(usersService.create).toHaveBeenCalled();
       expect(result.accessToken).toBe('mock-jwt-token');
       expect(result.user.name).toBe('New User');

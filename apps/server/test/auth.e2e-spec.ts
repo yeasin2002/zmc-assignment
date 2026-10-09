@@ -35,21 +35,17 @@ describe('Authentication (e2e)', () => {
   };
 
   it('POST /api/auth/register - rejects invalid password (too short or missing complexity)', async () => {
-    const response = await request(app.getHttpServer())
-      .post('/api/auth/register')
-      .send({
-        name: 'Weak Pass',
-        email: 'weak@example.com',
-        password: 'weak',
-      });
+    const response = await request(app.getHttpServer()).post('/api/auth/register').send({
+      name: 'Weak Pass',
+      email: 'weak@example.com',
+      password: 'weak',
+    });
 
     expect(response.status).toBe(400);
   });
 
   it('POST /api/auth/register - successfully registers user and returns JWT + user', async () => {
-    const response = await request(app.getHttpServer())
-      .post('/api/auth/register')
-      .send(testUser);
+    const response = await request(app.getHttpServer()).post('/api/auth/register').send(testUser);
 
     expect(response.status).toBe(201);
     expect(response.body).toHaveProperty('accessToken');
@@ -59,20 +55,16 @@ describe('Authentication (e2e)', () => {
   });
 
   it('POST /api/auth/register - rejects duplicate email with 409 Conflict', async () => {
-    const response = await request(app.getHttpServer())
-      .post('/api/auth/register')
-      .send(testUser);
+    const response = await request(app.getHttpServer()).post('/api/auth/register').send(testUser);
 
     expect(response.status).toBe(409);
   });
 
   it('POST /api/auth/login - authenticates registered user and returns JWT', async () => {
-    const response = await request(app.getHttpServer())
-      .post('/api/auth/login')
-      .send({
-        email: testUser.email,
-        password: testUser.password,
-      });
+    const response = await request(app.getHttpServer()).post('/api/auth/login').send({
+      email: testUser.email,
+      password: testUser.password,
+    });
 
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty('accessToken');
@@ -80,12 +72,10 @@ describe('Authentication (e2e)', () => {
   });
 
   it('POST /api/auth/login - rejects wrong password with 401 Unauthorized', async () => {
-    const response = await request(app.getHttpServer())
-      .post('/api/auth/login')
-      .send({
-        email: testUser.email,
-        password: 'WrongPassword123!',
-      });
+    const response = await request(app.getHttpServer()).post('/api/auth/login').send({
+      email: testUser.email,
+      password: 'WrongPassword123!',
+    });
 
     expect(response.status).toBe(401);
   });
@@ -97,12 +87,10 @@ describe('Authentication (e2e)', () => {
 
   it('GET /api/auth/me - returns user profile when valid Bearer token is provided', async () => {
     // 1. Log in to get accessToken
-    const loginRes = await request(app.getHttpServer())
-      .post('/api/auth/login')
-      .send({
-        email: testUser.email,
-        password: testUser.password,
-      });
+    const loginRes = await request(app.getHttpServer()).post('/api/auth/login').send({
+      email: testUser.email,
+      password: testUser.password,
+    });
 
     const token = loginRes.body.accessToken;
 

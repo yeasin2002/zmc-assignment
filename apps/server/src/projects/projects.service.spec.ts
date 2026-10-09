@@ -34,10 +34,7 @@ describe('ProjectsService', () => {
     };
 
     const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        ProjectsService,
-        { provide: PrismaService, useValue: prisma },
-      ],
+      providers: [ProjectsService, { provide: PrismaService, useValue: prisma }],
     }).compile();
 
     service = module.get<ProjectsService>(ProjectsService);
@@ -68,9 +65,9 @@ describe('ProjectsService', () => {
     it('should throw NotFoundException if project does not exist', async () => {
       prisma.project.findUnique.mockResolvedValue(null);
 
-      await expect(
-        service.getProjectById('non-existent', 'user-1'),
-      ).rejects.toThrow(NotFoundException);
+      await expect(service.getProjectById('non-existent', 'user-1')).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it('should throw ForbiddenException if user is not a member or owner of the project', async () => {
@@ -81,9 +78,9 @@ describe('ProjectsService', () => {
         _count: { tasks: 0, members: 1 },
       });
 
-      await expect(
-        service.getProjectById('proj-1', 'user-attacker'),
-      ).rejects.toThrow(ForbiddenException);
+      await expect(service.getProjectById('proj-1', 'user-attacker')).rejects.toThrow(
+        ForbiddenException,
+      );
     });
 
     it('should return project details when user is an authorized member', async () => {
@@ -156,9 +153,7 @@ describe('ProjectsService', () => {
         ownerId: 'owner-id',
       });
 
-      await expect(service.delete('proj-1', 'non-owner')).rejects.toThrow(
-        ForbiddenException,
-      );
+      await expect(service.delete('proj-1', 'non-owner')).rejects.toThrow(ForbiddenException);
     });
 
     it('should delete project when caller is owner', async () => {
@@ -252,9 +247,9 @@ describe('ProjectsService', () => {
         ownerId: 'owner-id',
       });
 
-      await expect(
-        service.removeMember('proj-1', 'owner-id', 'owner-id'),
-      ).rejects.toThrow(BadRequestException);
+      await expect(service.removeMember('proj-1', 'owner-id', 'owner-id')).rejects.toThrow(
+        BadRequestException,
+      );
     });
 
     it('should throw ForbiddenException if non-owner attempts to remove member', async () => {
@@ -263,9 +258,9 @@ describe('ProjectsService', () => {
         ownerId: 'owner-id',
       });
 
-      await expect(
-        service.removeMember('proj-1', 'not-owner', 'target-member'),
-      ).rejects.toThrow(ForbiddenException);
+      await expect(service.removeMember('proj-1', 'not-owner', 'target-member')).rejects.toThrow(
+        ForbiddenException,
+      );
     });
 
     it('should remove member when owner issues removal of regular member', async () => {
@@ -278,11 +273,7 @@ describe('ProjectsService', () => {
       });
       prisma.projectMember.delete.mockResolvedValue({});
 
-      const result = await service.removeMember(
-        'proj-1',
-        'owner-id',
-        'regular-member',
-      );
+      const result = await service.removeMember('proj-1', 'owner-id', 'regular-member');
       expect(result.message).toContain('removed');
     });
   });

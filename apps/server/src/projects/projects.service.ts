@@ -28,10 +28,7 @@ export class ProjectsService {
     return projects.map((project) => {
       const currentUserRole = project.members[0]?.role ?? ProjectRole.MEMBER;
       const { members: _m, ...rest } = project;
-      return {
-        ...rest,
-        currentUserRole,
-      };
+      return { ...rest, currentUserRole };
     });
   }
 
@@ -39,47 +36,23 @@ export class ProjectsService {
     const project = await this.prisma.project.findUnique({
       where: { id: projectId },
       include: {
-        owner: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-          },
-        },
+        owner: { select: { id: true, name: true, email: true } },
         members: {
-          include: {
-            user: {
-              select: {
-                id: true,
-                name: true,
-                email: true,
-              },
-            },
-          },
+          include: { user: { select: { id: true, name: true, email: true } } },
           orderBy: { joinedAt: 'asc' },
         },
-        _count: {
-          select: {
-            tasks: true,
-            members: true,
-          },
-        },
+        _count: { select: { tasks: true, members: true } },
       },
     });
 
-    if (!project) {
-      throw new NotFoundException('Project not found');
-    }
+    if (!project) throw new NotFoundException('Project not found');
 
     const membership = project.members.find((m) => m.userId === userId);
     if (!membership) {
       throw new ForbiddenException('You do not have access to this project');
     }
 
-    return {
-      ...project,
-      currentUserRole: membership.role,
-    };
+    return { ...project, currentUserRole: membership.role };
   }
 
   async create(userId: string, dto: CreateProjectDto) {
@@ -88,229 +61,113 @@ export class ProjectsService {
         name: dto.name.trim(),
         description: dto.description?.trim(),
         ownerId: userId,
-        members: {
-          create: {
-            userId,
-            role: ProjectRole.OWNER,
-          },
-        },
+        members: { create: { userId, role: ProjectRole.OWNER } },
       },
       include: {
-        owner: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-          },
-        },
-        members: {
-          include: {
-            user: {
-              select: {
-                id: true,
-                name: true,
-                email: true,
-              },
-            },
-          },
-        },
-        _count: {
-          select: {
-            members: true,
-            tasks: true,
-          },
-        },
+        owner: { select: { id: true, name: true, email: true } },
+        members: { include: { user: { select: { id: true, name: true, email: true } } } },
+        _count: { select: { members: true, tasks: true } },
       },
     });
   }
 
   async update(projectId: string, userId: string, dto: UpdateProjectDto) {
-    const project = await this.prisma.project.findUnique({
-      where: { id: projectId },
-    });
-
-    if (!project) {
-      throw new NotFoundException('Project not found');
-    }
+    const project = await this.prisma.project.findUnique({ where: { id: projectId } });
+    if (!project) throw new NotFoundException('Project not found');
 
     if (project.ownerId !== userId) {
-      throw new ForbiddenException(
-        'Only the project owner can update project details',
-      );
+      throw new ForbiddenException('Only the project owner can update project details');
     }
 
     return this.prisma.project.update({
       where: { id: projectId },
       data: {
         name: dto.name !== undefined ? dto.name.trim() : undefined,
-        description:
-          dto.description !== undefined ? dto.description?.trim() : undefined,
+        description: dto.description !== undefined ? dto.description?.trim() : undefined,
       },
-      include: {
-        owner: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-          },
-        },
-      },
+      include: { owner: { select: { id: true, name: true, email: true } } },
     });
   }
 
   async delete(projectId: string, userId: string) {
-    const project = await this.prisma.project.findUnique({
-      where: { id: projectId },
-    });
-
-    if (!project) {
-      throw new NotFoundException('Project not found');
-    }
+    const project = await this.prisma.project.findUnique({ where: { id: projectId } });
+    if (!project) throw new NotFoundException('Project not found');
 
     if (project.ownerId !== userId) {
-      throw new ForbiddenException(
-        'Only the project owner can delete this project',
-      );
+      throw new ForbiddenException('Only the project owner can delete this project');
     }
 
-    await this.prisma.project.delete({
-      where: { id: projectId },
-    });
-
+    await this.prisma.project.delete({ where: { id: projectId } });
     return { message: 'Project deleted successfully' };
   }
 
   async getMembers(projectId: string, userId: string) {
     const membership = await this.prisma.projectMember.findUnique({
-      where: {
-        projectId_userId: { projectId, userId },
-      },
+      where: { projectId_userId: { projectId, userId } },
     });
 
     if (!membership) {
-      const exists = await this.prisma.project.findUnique({
-        where: { id: projectId },
-      });
-      if (!exists) {
-        throw new NotFoundException('Project not found');
-      }
+      const exists = await this.prisma.project.findUnique({ where: { id: projectId } });
+      if (!exists) throw new NotFoundException('Project not found');
       throw new ForbiddenException('You do not have access to this project');
     }
 
     return this.prisma.projectMember.findMany({
       where: { projectId },
-      include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-          },
-        },
-      },
+      include: { user: { select: { id: true, name: true, email: true } } },
       orderBy: { joinedAt: 'asc' },
     });
   }
 
   async addMember(projectId: string, ownerId: string, dto: AddMemberDto) {
-    const project = await this.prisma.project.findUnique({
-      where: { id: projectId },
-    });
-
-    if (!project) {
-      throw new NotFoundException('Project not found');
-    }
+    const project = await this.prisma.project.findUnique({ where: { id: projectId } });
+    if (!project) throw new NotFoundException('Project not found');
 
     if (project.ownerId !== ownerId) {
-      throw new ForbiddenException(
-        'Only the project owner can add members to this project',
-      );
+      throw new ForbiddenException('Only the project owner can add members to this project');
     }
 
     const userToAdd = await this.prisma.user.findUnique({
       where: { email: dto.email.toLowerCase().trim() },
     });
-
     if (!userToAdd) {
-      throw new NotFoundException(
-        `User with email "${dto.email}" was not found`,
-      );
+      throw new NotFoundException(`User with email "${dto.email}" was not found`);
     }
 
     const existingMember = await this.prisma.projectMember.findUnique({
-      where: {
-        projectId_userId: {
-          projectId,
-          userId: userToAdd.id,
-        },
-      },
+      where: { projectId_userId: { projectId, userId: userToAdd.id } },
     });
-
     if (existingMember) {
-      throw new ConflictException(
-        'This user is already a member of the project',
-      );
+      throw new ConflictException('This user is already a member of the project');
     }
 
     return this.prisma.projectMember.create({
-      data: {
-        projectId,
-        userId: userToAdd.id,
-        role: ProjectRole.MEMBER,
-      },
-      include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-          },
-        },
-      },
+      data: { projectId, userId: userToAdd.id, role: ProjectRole.MEMBER },
+      include: { user: { select: { id: true, name: true, email: true } } },
     });
   }
 
   async removeMember(projectId: string, ownerId: string, memberUserId: string) {
-    const project = await this.prisma.project.findUnique({
-      where: { id: projectId },
-    });
-
-    if (!project) {
-      throw new NotFoundException('Project not found');
-    }
+    const project = await this.prisma.project.findUnique({ where: { id: projectId } });
+    if (!project) throw new NotFoundException('Project not found');
 
     if (project.ownerId !== ownerId) {
-      throw new ForbiddenException(
-        'Only the project owner can remove members from this project',
-      );
+      throw new ForbiddenException('Only the project owner can remove members from this project');
     }
 
     if (memberUserId === ownerId) {
-      throw new BadRequestException(
-        'The project owner cannot be removed from the project',
-      );
+      throw new BadRequestException('The project owner cannot be removed from the project');
     }
 
     const membership = await this.prisma.projectMember.findUnique({
-      where: {
-        projectId_userId: {
-          projectId,
-          userId: memberUserId,
-        },
-      },
+      where: { projectId_userId: { projectId, userId: memberUserId } },
     });
-
     if (!membership) {
       throw new NotFoundException('Member not found in this project');
     }
 
     await this.prisma.projectMember.delete({
-      where: {
-        projectId_userId: {
-          projectId,
-          userId: memberUserId,
-        },
-      },
+      where: { projectId_userId: { projectId, userId: memberUserId } },
     });
 
     return { message: 'Member removed from project successfully' };

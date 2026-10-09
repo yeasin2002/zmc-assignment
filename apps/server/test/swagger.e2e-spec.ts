@@ -35,9 +35,7 @@ describe('Swagger Documentation (e2e)', () => {
     const response = await request(app.getHttpServer()).get('/api/docs-json');
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty('openapi');
-    expect(response.body.info.title).toBe(
-      'Project & Task Management System API',
-    );
+    expect(response.body.info.title).toBe('Project & Task Management System API');
     expect(response.body.paths).toHaveProperty('/api/auth/register');
     expect(response.body.paths).toHaveProperty('/api/auth/login');
     expect(response.body.paths).toHaveProperty('/api/auth/me');

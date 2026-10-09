@@ -10,10 +10,7 @@ export class UsersService {
 
   async create(data: Prisma.UserCreateInput): Promise<User> {
     return this.prisma.user.create({
-      data: {
-        ...data,
-        email: data.email.toLowerCase().trim(),
-      },
+      data: { ...data, email: data.email.toLowerCase().trim() },
     });
   }
 
@@ -24,18 +21,14 @@ export class UsersService {
   }
 
   async findById(id: string): Promise<SafeUser | null> {
-    const user = await this.prisma.user.findUnique({
-      where: { id },
-    });
+    const user = await this.prisma.user.findUnique({ where: { id } });
     if (!user) return null;
     const { password: _password, ...safeUser } = user;
     return safeUser;
   }
 
   async findAll(): Promise<SafeUser[]> {
-    const users = await this.prisma.user.findMany({
-      orderBy: { name: 'asc' },
-    });
+    const users = await this.prisma.user.findMany({ orderBy: { name: 'asc' } });
     return users.map(({ password: _password, ...safeUser }) => safeUser);
   }
 }

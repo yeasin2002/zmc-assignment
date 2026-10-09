@@ -9,13 +9,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import {
-  ApiBearerAuth,
-  ApiOperation,
-  ApiParam,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
 import { AddMemberDto } from './dto/add-member.dto.js';
@@ -45,10 +39,7 @@ export class ProjectsController {
   @ApiOperation({ summary: 'Create a new project (caller becomes owner)' })
   @ApiResponse({ status: 201, description: 'Project created successfully' })
   @ApiResponse({ status: 400, description: 'Validation failed' })
-  async createProject(
-    @CurrentUser('id') userId: string,
-    @Body() dto: CreateProjectDto,
-  ) {
+  async createProject(@CurrentUser('id') userId: string, @Body() dto: CreateProjectDto) {
     return this.projectsService.create(userId, dto);
   }
 
@@ -62,10 +53,7 @@ export class ProjectsController {
     description: 'Forbidden - user is not a member of this project',
   })
   @ApiResponse({ status: 404, description: 'Project not found' })
-  async getProject(
-    @Param('id', ParseUUIDPipe) id: string,
-    @CurrentUser('id') userId: string,
-  ) {
+  async getProject(@Param('id', ParseUUIDPipe) id: string, @CurrentUser('id') userId: string) {
     return this.projectsService.getProjectById(id, userId);
   }
 
@@ -97,10 +85,7 @@ export class ProjectsController {
     description: 'Forbidden - only the project owner can delete',
   })
   @ApiResponse({ status: 404, description: 'Project not found' })
-  async deleteProject(
-    @Param('id', ParseUUIDPipe) id: string,
-    @CurrentUser('id') userId: string,
-  ) {
+  async deleteProject(@Param('id', ParseUUIDPipe) id: string, @CurrentUser('id') userId: string) {
     return this.projectsService.delete(id, userId);
   }
 
@@ -111,10 +96,7 @@ export class ProjectsController {
   @ApiResponse({ status: 200, description: 'Project members retrieved' })
   @ApiResponse({ status: 403, description: 'Forbidden - not a project member' })
   @ApiResponse({ status: 404, description: 'Project not found' })
-  async getMembers(
-    @Param('id', ParseUUIDPipe) id: string,
-    @CurrentUser('id') userId: string,
-  ) {
+  async getMembers(@Param('id', ParseUUIDPipe) id: string, @CurrentUser('id') userId: string) {
     return this.projectsService.getMembers(id, userId);
   }
 
