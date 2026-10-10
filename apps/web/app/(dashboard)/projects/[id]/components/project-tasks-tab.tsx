@@ -1,47 +1,177 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import {
-  IconCalendar,
   IconChecklist,
+  IconChevronLeft,
+  IconChevronRight,
+  IconPlus,
   IconSearch,
 } from '@tabler/icons-react';
-import type { Task } from '@/api/query-list/tasks.query';
-import { PriorityBadge, StatusBadge } from '@/components/ui/badge';
+import { useProjectTasks, useUpdateTask } from '@/api/api-hooks/tasks.api-hook';
+import type { ProjectMember } from '@/api/query-list/projects.query';
+import type { Task, TaskFilters, TaskPriority, TaskStatus } from '@/api/query-list/tasks.query';
 import { Button } from '@/components/ui/button';
+import { Alert } from '@/components/ui/alert';
 import { EmptyState } from '@/components/ui/empty-state';
 import { Skeleton } from '@/components/ui/skeleton';
+import { getApiErrorMessage } from '@/lib/axios';
+
+import { TasksTable } from './tasks-table';
+import { TaskModal } from './task-modal';
+import { DeleteTaskDialog } from './delete-task-dialog';
 
 interface ProjectTasksTabProps {
-  tasks: Task[];
-  isLoading: boolean;
+  projectId: string;
+  members: ProjectMember[];
+  isOwner: boolean;
 }
 
-export function ProjectTasksTab({ tasks, isLoading }: ProjectTasksTabProps) {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState('');
-  const [priorityFilter, setPriorityFilter] = useState('');
+export function ProjectTasksTab({
+  projectId,
+  members,
+  isOwner,
+}: ProjectTasksTabProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
-  const filteredTasks = tasks.filter((task: Task) => {
-    const matchesSearch =
-      task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (task.description && task.description.toLowerCase().includes(searchQuery.toLowerCase()));
-    const matchesStatus = !statusFilter || task.status === statusFilter;
-    const matchesPriority = !priorityFilter || task.priority === priorityFilter;
-    return matchesSearch && matchesStatus && matchesPriority;
-  });
+  // Read URL query parameters
+  const searchParam = searchParams.get('search') || '';
+  const statusParam = (searchParams.get('status') as TaskStatus) || '';
+  const priorityParam = (searchParams.get('priority') as TaskPriority) || '';
+  const assigneeIdParam = searchParams.get('assigneeId') || '';
+  const sortByParam = (searchParams.get('sortBy') as 'dueDate' | 'createdAt') || 'createdAt';
+  const orderParam = (searchParams.get('order') as 'asc' | 'desc') || 'desc';
+  const pageParam = Math.max(1, parseInt(searchParams.get('page') || '1', 10));
 
-  const resetFilters = () => {
-    setSearchQuery('');
-    setStatusFilter('');
-    setPriorityFilter('');
+  // Local state for debounced search input (with render adjustment for URL changes)
+  const [searchInput, setSearchInput] = useState(searchParam);
+  const [prevSearchParam, setPrevSearchParam] = useState(searchParam);
+
+  if (prevSearchParam !== searchParam) {
+    setPrevSearchParam(searchParam);
+    setSearchInput(searchParam);
+  }
+
+  // URL Synchronization helper
+  const updateFilters = useCallback(
+    (updates: Record<string, string | number | undefined>) => {
+      const params = new URLSearchParams(searchParams.toString());
+
+      Object.entries(updates).forEach(([key, val]) => {
+        if (val === undefined || val === '' || val === null) {
+          params.delete(key);
+        } else {
+          params.set(key, String(val));
+        }
+      });
+
+      // Reset page to 1 whenever a filter other than page changes
+      if (!('page' in updates)) {
+        params.delete('page');
+      }
+
+      const queryString = params.toString();
+      router.replace(`${pathname}${queryString ? `?${queryString}` : ''}`, { scroll: false });
+    },
+    [pathname, router, searchParams],
+  );
+
+  // Debounce search input to URL query
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (searchInput !== searchParam) {
+        updateFilters({ search: searchInput.trim() || undefined });
+      }
+    }, 350);
+
+    return () => clearTimeout(timer);
+  }, [searchInput, searchParam, updateFilters]);
+
+  // Build query filter object
+  const currentFilters: TaskFilters = {
+    search: searchParam || undefined,
+    status: statusParam || undefined,
+    priority: priorityParam || undefined,
+    assigneeId: assigneeIdParam || undefined,
+    sortBy: sortByParam,
+    order: orderParam,
+    page: pageParam,
+    limit: 10,
   };
+
+  // Queries & Mutations
+  const {
+    data: tasksData,
+    isLoading,
+    error,
+    refetch,
+  } = useProjectTasks(projectId, currentFilters);
+
+  const updateTaskMutation = useUpdateTask();
+
+  const tasks = tasksData?.data || [];
+  const meta = tasksData?.meta || { total: 0, page: 1, limit: 10, totalPages: 1 };
+
+  // Modal states
+  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+  const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
+  const [taskToDelete, setTaskToDelete] = useState<Task | null>(null);
+
+  const handleOpenCreate = () => {
+    setTaskToEdit(null);
+    setIsTaskModalOpen(true);
+  };
+
+  const handleOpenEdit = (task: Task) => {
+    setTaskToEdit(task);
+    setIsTaskModalOpen(true);
+  };
+
+  const handleInlineStatusChange = async (task: Task, newStatus: TaskStatus) => {
+    if (task.status === newStatus) return;
+    try {
+      await updateTaskMutation.mutateAsync({
+        id: task.id,
+        data: { status: newStatus },
+      });
+    } catch {
+      // Toast notification is handled in mutation hook
+    }
+  };
+
+  const resetAllFilters = () => {
+    setSearchInput('');
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete('search');
+    params.delete('status');
+    params.delete('priority');
+    params.delete('assigneeId');
+    params.delete('sortBy');
+    params.delete('order');
+    params.delete('page');
+    const queryString = params.toString();
+    router.replace(`${pathname}${queryString ? `?${queryString}` : ''}`, { scroll: false });
+  };
+
+  const hasActiveFilters =
+    !!searchParam ||
+    !!statusParam ||
+    !!priorityParam ||
+    !!assigneeIdParam ||
+    sortByParam !== 'createdAt' ||
+    orderParam !== 'desc';
+
+  const startItem = meta.total === 0 ? 0 : (meta.page - 1) * meta.limit + 1;
+  const endItem = Math.min(meta.page * meta.limit, meta.total);
 
   return (
     <div className="space-y-6">
-      {/* Query Toolbar */}
+      {/* Query & Filter Toolbar */}
       <div className="bg-white rounded-2xl border border-zinc-200/80 p-4 space-y-3 shadow-2xs">
-        <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-3">
           {/* Keyword Search */}
           <div className="relative md:col-span-2">
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-zinc-400">
@@ -49,9 +179,9 @@ export function ProjectTasksTab({ tasks, isLoading }: ProjectTasksTabProps) {
             </div>
             <input
               type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search tasks by title or details..."
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              placeholder="Search tasks by title keyword..."
               className="w-full rounded-xl border border-zinc-200 bg-white py-2 pl-9 pr-3 text-xs sm:text-sm text-zinc-900 placeholder:text-zinc-400 outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900"
             />
           </div>
@@ -59,8 +189,8 @@ export function ProjectTasksTab({ tasks, isLoading }: ProjectTasksTabProps) {
           {/* Status Filter */}
           <div>
             <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
+              value={statusParam}
+              onChange={(e) => updateFilters({ status: e.target.value || undefined })}
               className="w-full rounded-xl border border-zinc-200 bg-white py-2 px-3 text-xs sm:text-sm text-zinc-700 outline-none focus:border-zinc-900"
             >
               <option value="">All Statuses</option>
@@ -73,8 +203,8 @@ export function ProjectTasksTab({ tasks, isLoading }: ProjectTasksTabProps) {
           {/* Priority Filter */}
           <div>
             <select
-              value={priorityFilter}
-              onChange={(e) => setPriorityFilter(e.target.value)}
+              value={priorityParam}
+              onChange={(e) => updateFilters({ priority: e.target.value || undefined })}
               className="w-full rounded-xl border border-zinc-200 bg-white py-2 px-3 text-xs sm:text-sm text-zinc-700 outline-none focus:border-zinc-900"
             >
               <option value="">All Priorities</option>
@@ -84,121 +214,166 @@ export function ProjectTasksTab({ tasks, isLoading }: ProjectTasksTabProps) {
             </select>
           </div>
 
-          <div className="flex items-center justify-end">
-            <Button variant="outline" size="sm" onClick={resetFilters}>
-              Reset Filters
-            </Button>
+          {/* Assignee Filter */}
+          <div>
+            <select
+              value={assigneeIdParam}
+              onChange={(e) => updateFilters({ assigneeId: e.target.value || undefined })}
+              className="w-full rounded-xl border border-zinc-200 bg-white py-2 px-3 text-xs sm:text-sm text-zinc-700 outline-none focus:border-zinc-900"
+            >
+              <option value="">All Assignees</option>
+              {members.map((m) => (
+                <option key={m.userId} value={m.userId}>
+                  {m.user.name}
+                </option>
+              ))}
+            </select>
           </div>
+
+          {/* Sort Selector */}
+          <div>
+            <select
+              value={`${sortByParam}:${orderParam}`}
+              onChange={(e) => {
+                const [sb, ord] = e.target.value.split(':');
+                updateFilters({ sortBy: sb, order: ord });
+              }}
+              className="w-full rounded-xl border border-zinc-200 bg-white py-2 px-3 text-xs sm:text-sm text-zinc-700 outline-none focus:border-zinc-900"
+            >
+              <option value="createdAt:desc">Created (Newest)</option>
+              <option value="createdAt:asc">Created (Oldest)</option>
+              <option value="dueDate:asc">Due Date (Earliest)</option>
+              <option value="dueDate:desc">Due Date (Latest)</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Toolbar Footer Actions */}
+        <div className="flex items-center justify-between border-t border-zinc-100 pt-3">
+          <div className="flex items-center gap-2">
+            {hasActiveFilters && (
+              <Button variant="ghost" size="sm" onClick={resetAllFilters}>
+                Reset Filters
+              </Button>
+            )}
+          </div>
+
+          <Button size="sm" onClick={handleOpenCreate}>
+            <IconPlus className="h-4 w-4" size={16} />
+            <span>New Task</span>
+          </Button>
         </div>
       </div>
 
-      {/* Task Table, Skeleton, or Empty State */}
+      {/* Error Alert */}
+      {error && (
+        <Alert
+          type="error"
+          title="Failed to load tasks"
+          message={getApiErrorMessage(error, 'Unable to retrieve workspace tasks.')}
+          onRetry={() => refetch()}
+        />
+      )}
+
+      {/* Loading Skeletons */}
       {isLoading ? (
         <div className="bg-white rounded-2xl border border-zinc-200/80 p-6 space-y-3">
-          {Array.from({ length: 4 }).map((_, idx) => (
-            <div key={idx} className="flex justify-between items-center py-2 animate-pulse">
-              <Skeleton className="h-4 w-48" />
+          {Array.from({ length: 5 }).map((_, idx) => (
+            <div key={idx} className="flex justify-between items-center py-2.5 animate-pulse">
+              <Skeleton className="h-4 w-52" />
               <Skeleton className="h-4 w-20" />
               <Skeleton className="h-4 w-16" />
+              <Skeleton className="h-4 w-24" />
             </div>
           ))}
         </div>
       ) : tasks.length === 0 ? (
-        <EmptyState
-          icon={IconChecklist}
-          title="No tasks in this workspace yet"
-          description="Get started by creating your first task to track progress and assign deliverables."
-        />
-      ) : filteredTasks.length === 0 ? (
-        <EmptyState
-          icon={IconSearch}
-          title="No tasks match your filters"
-          description="Try adjusting your status, priority, or search query to find tasks."
-          action={
-            <Button variant="outline" size="sm" onClick={resetFilters}>
-              Reset Filters
-            </Button>
-          }
-        />
+        hasActiveFilters ? (
+          <EmptyState
+            icon={IconSearch}
+            title="No tasks match your filters"
+            description="Try adjusting your keyword, status, priority, or assignee filter to find deliverables."
+            action={
+              <Button variant="outline" size="sm" onClick={resetAllFilters}>
+                Clear All Filters
+              </Button>
+            }
+          />
+        ) : (
+          <EmptyState
+            icon={IconChecklist}
+            title="No tasks in this workspace yet"
+            description="Create your first task deliverable to track progress and collaborate with your team."
+            action={
+              <Button size="sm" onClick={handleOpenCreate}>
+                <IconPlus className="h-4 w-4" size={16} />
+                <span>Create First Task</span>
+              </Button>
+            }
+          />
+        )
       ) : (
         <div className="bg-white rounded-2xl border border-zinc-200/80 overflow-hidden shadow-2xs">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs sm:text-sm">
-              <thead className="border-b border-zinc-200/80 bg-zinc-50/60 text-zinc-500 uppercase tracking-wider text-[11px] font-semibold">
-                <tr>
-                  <th className="py-3 px-4 sm:px-6">Task Title</th>
-                  <th className="py-3 px-4">Status</th>
-                  <th className="py-3 px-4">Priority</th>
-                  <th className="py-3 px-4">Assignee</th>
-                  <th className="py-3 px-4">Due Date</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-zinc-100 text-zinc-800">
-                {filteredTasks.map((task: Task) => (
-                  <tr key={task.id} className="hover:bg-zinc-50/50 transition-colors">
-                    <td className="py-3.5 px-4 sm:px-6">
-                      <div className="font-medium text-zinc-900">{task.title}</div>
-                      {task.description && (
-                        <div className="text-xs text-zinc-400 mt-0.5 line-clamp-1">
-                          {task.description}
-                        </div>
-                      )}
-                    </td>
+          <TasksTable
+            tasks={tasks}
+            isOwner={isOwner}
+            onEditTask={handleOpenEdit}
+            onDeleteTask={(task) => setTaskToDelete(task)}
+            onStatusChange={handleInlineStatusChange}
+          />
 
-                    <td className="py-3.5 px-4 whitespace-nowrap">
-                      <StatusBadge status={task.status} />
-                    </td>
-
-                    <td className="py-3.5 px-4 whitespace-nowrap">
-                      <PriorityBadge priority={task.priority} />
-                    </td>
-
-                    <td className="py-3.5 px-4 whitespace-nowrap text-xs">
-                      {task.assignee ? (
-                        <div className="flex items-center gap-1.5">
-                          <div className="h-5 w-5 rounded-full bg-zinc-200 text-zinc-700 text-[10px] font-bold flex items-center justify-center">
-                            {task.assignee.name.charAt(0)}
-                          </div>
-                          <span className="text-zinc-800 font-medium">
-                            {task.assignee.name}
-                          </span>
-                        </div>
-                      ) : (
-                        <span className="text-zinc-400 italic">Unassigned</span>
-                      )}
-                    </td>
-
-                    <td className="py-3.5 px-4 whitespace-nowrap text-xs text-zinc-500">
-                      {task.dueDate ? (
-                        <div className="inline-flex items-center gap-1">
-                          <IconCalendar className="h-3.5 w-3.5 text-zinc-400" size={14} />
-                          <span>
-                            {new Date(task.dueDate).toLocaleDateString(undefined, {
-                              month: 'short',
-                              day: 'numeric',
-                              year: 'numeric',
-                            })}
-                          </span>
-                        </div>
-                      ) : (
-                        <span className="text-zinc-400">No due date</span>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          {/* Task Count Bar */}
+          {/* Pagination & Count Footer */}
           <div className="border-t border-zinc-100 px-4 sm:px-6 py-3.5 text-xs text-zinc-500 flex items-center justify-between">
             <span>
-              Showing <span className="font-semibold text-zinc-700">{filteredTasks.length}</span> of{' '}
-              <span className="font-semibold text-zinc-700">{tasks.length}</span> tasks
+              Showing <span className="font-semibold text-zinc-700">{startItem}</span> to{' '}
+              <span className="font-semibold text-zinc-700">{endItem}</span> of{' '}
+              <span className="font-semibold text-zinc-700">{meta.total}</span> tasks
             </span>
+
+            <div className="flex items-center gap-1.5">
+              <button
+                type="button"
+                disabled={meta.page <= 1}
+                onClick={() => updateFilters({ page: meta.page - 1 })}
+                aria-label="Previous page"
+                className="inline-flex items-center justify-center h-8 w-8 rounded-full border border-zinc-200 text-zinc-600 hover:bg-zinc-50 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+              >
+                <IconChevronLeft className="h-4 w-4" size={16} />
+              </button>
+
+              <span className="px-2 font-medium text-zinc-700">
+                Page {meta.page} of {Math.max(meta.totalPages, 1)}
+              </span>
+
+              <button
+                type="button"
+                disabled={meta.page >= meta.totalPages}
+                onClick={() => updateFilters({ page: meta.page + 1 })}
+                aria-label="Next page"
+                className="inline-flex items-center justify-center h-8 w-8 rounded-full border border-zinc-200 text-zinc-600 hover:bg-zinc-50 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+              >
+                <IconChevronRight className="h-4 w-4" size={16} />
+              </button>
+            </div>
           </div>
         </div>
       )}
+
+      {/* Task Creation & Edit Modal */}
+      <TaskModal
+        open={isTaskModalOpen}
+        onOpenChange={setIsTaskModalOpen}
+        projectId={projectId}
+        members={members}
+        taskToEdit={taskToEdit}
+      />
+
+      {/* Task Deletion Confirmation Dialog (Owner Only) */}
+      <DeleteTaskDialog
+        task={taskToDelete}
+        open={!!taskToDelete}
+        onOpenChange={(open) => !open && setTaskToDelete(null)}
+      />
     </div>
   );
 }

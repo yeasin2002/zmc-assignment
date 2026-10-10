@@ -167,7 +167,7 @@ A streamlined, phased task list tracking completed milestones and remaining deli
   - Remove member mutation (`DELETE /api/projects/:id/members/:userId`, Owner only, prevent owner removal)
 
 ### Phase 6.6: Task Management & Query Operations Integration
-- [ ] Tasks List Query (`GET /api/projects/:id/tasks`):
+- [x] Tasks List Query (`GET /api/projects/:id/tasks`):
   - Implement URL query parameter synchronization (`useSearchParams` / `useRouter`):
     - `search` (debounced title keyword)
     - `status` (`TODO`, `IN_PROGRESS`, `DONE`)
@@ -176,17 +176,17 @@ A streamlined, phased task list tracking completed milestones and remaining deli
     - `sortBy` (`createdAt` / `dueDate`) & `order` (`asc` / `desc`)
     - `page` & `limit`
   - Ensure shareable, bookmarkable filter URLs
-- [ ] Task Creation (`POST /api/projects/:id/tasks`):
+- [x] Task Creation (`POST /api/projects/:id/tasks`):
   - Modal form with Title, Description, Status, Priority, Due Date
   - Dynamic Assignee dropdown populated strictly from active project members
   - Cache invalidation and success feedback
-- [ ] Task Updates (`PATCH /api/tasks/:id`):
+- [x] Task Updates (`PATCH /api/tasks/:id`):
   - Inline status toggle or edit modal (Status, Priority, Assignee, Details)
   - Assignee update validated against project members
-- [ ] Task Deletion (`DELETE /api/tasks/:id`):
+- [x] Task Deletion (`DELETE /api/tasks/:id`):
   - Owner-only delete action with confirmation modal
   - Hidden / disabled for non-owners (backend strictly enforces 403)
-- [ ] Complete 4 UI states across task views:
+- [x] Complete 4 UI states across task views:
   - Table / Card skeletons during query loading
   - Error alert with retry on query failure
   - Meaningful empty state when no tasks match current search/filters

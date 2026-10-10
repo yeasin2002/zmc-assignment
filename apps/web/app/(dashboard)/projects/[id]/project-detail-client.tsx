@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import {
   IconAlertTriangle,
   IconArrowLeft,
@@ -12,7 +13,6 @@ import {
   useProject,
   useProjectMembers,
 } from '@/api/api-hooks/projects.api-hook';
-import { useProjectTasks } from '@/api/api-hooks/tasks.api-hook';
 import { RoleBadge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/ui/empty-state';
@@ -24,7 +24,24 @@ import { ProjectMembersTab } from './components/project-members-tab';
 import { ProjectSettingsTab } from './components/project-settings-tab';
 
 export default function ProjectDetailClient({ id }: { id: string }) {
-  const [activeTab, setActiveTab] = useState<'tasks' | 'members' | 'settings'>('tasks');
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  // Tab state synced with URL search parameter
+  const tabParam = searchParams.get('tab') as 'tasks' | 'members' | 'settings' | null;
+  const activeTab = tabParam && ['tasks', 'members', 'settings'].includes(tabParam) ? tabParam : 'tasks';
+
+  const handleTabChange = (tab: 'tasks' | 'members' | 'settings') => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (tab === 'tasks') {
+      params.delete('tab');
+    } else {
+      params.set('tab', tab);
+    }
+    const qs = params.toString();
+    router.replace(`${pathname}${qs ? `?${qs}` : ''}`, { scroll: false });
+  };
 
   // Queries
   const {
@@ -39,12 +56,6 @@ export default function ProjectDetailClient({ id }: { id: string }) {
     isLoading: isMembersLoading,
   } = useProjectMembers(id);
 
-  const {
-    data: tasksData,
-    isLoading: isTasksLoading,
-  } = useProjectTasks(id);
-
-  const tasks = tasksData?.data || [];
   const isOwner = project?.currentUserRole === 'OWNER';
 
   // Graceful handling for 403 Forbidden / 404 Not Found / Network Errors
@@ -157,7 +168,7 @@ export default function ProjectDetailClient({ id }: { id: string }) {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setActiveTab('members')}
+              onClick={() => handleTabChange('members')}
             >
               <IconUsers className="h-4 w-4 text-zinc-600" size={16} />
               <span>Members ({members.length})</span>
@@ -167,7 +178,7 @@ export default function ProjectDetailClient({ id }: { id: string }) {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => setActiveTab('members')}
+                onClick={() => handleTabChange('members')}
               >
                 <IconUserPlus className="h-4 w-4 text-zinc-600" size={16} />
                 <span>Invite Member</span>
@@ -180,7 +191,7 @@ export default function ProjectDetailClient({ id }: { id: string }) {
         <div className="flex items-center gap-6 border-b border-zinc-100 text-sm">
           <button
             type="button"
-            onClick={() => setActiveTab('tasks')}
+            onClick={() => handleTabChange('tasks')}
             className={`pb-3 font-semibold transition-colors flex items-center gap-2 cursor-pointer ${
               activeTab === 'tasks'
                 ? 'border-b-2 border-black text-zinc-900'
@@ -189,13 +200,13 @@ export default function ProjectDetailClient({ id }: { id: string }) {
           >
             <span>Tasks</span>
             <span className="px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-700 text-xs font-medium">
-              {project._count?.tasks ?? tasks.length}
+              {project._count?.tasks ?? 0}
             </span>
           </button>
 
           <button
             type="button"
-            onClick={() => setActiveTab('members')}
+            onClick={() => handleTabChange('members')}
             className={`pb-3 font-medium transition-colors flex items-center gap-2 cursor-pointer ${
               activeTab === 'members'
                 ? 'border-b-2 border-black font-semibold text-zinc-900'
@@ -210,7 +221,7 @@ export default function ProjectDetailClient({ id }: { id: string }) {
 
           <button
             type="button"
-            onClick={() => setActiveTab('settings')}
+            onClick={() => handleTabChange('settings')}
             className={`pb-3 font-medium transition-colors flex items-center gap-2 cursor-pointer ${
               activeTab === 'settings'
                 ? 'border-b-2 border-black font-semibold text-zinc-900'
@@ -229,7 +240,11 @@ export default function ProjectDetailClient({ id }: { id: string }) {
 
       {/* Tab Contents */}
       {activeTab === 'tasks' && (
-        <ProjectTasksTab tasks={tasks} isLoading={isTasksLoading} />
+        <ProjectTasksTab
+          projectId={id}
+          members={members}
+          isOwner={isOwner}
+        />
       )}
 
       {activeTab === 'members' && (

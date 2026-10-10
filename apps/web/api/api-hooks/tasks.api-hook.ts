@@ -41,7 +41,7 @@ export const useCreateTask = (projectId: string) => {
   return useMutation({
     mutationFn: (data: CreateTaskData) => tasksApi.create(projectId, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['tasks', 'project', projectId] });
+      queryClient.invalidateQueries({ queryKey: TASK_KEYS.all() });
       queryClient.invalidateQueries({ queryKey: ['projects'] });
       queryClient.invalidateQueries({ queryKey: ['dashboard'] });
       toast.success('Task created successfully');
