@@ -117,32 +117,32 @@ A streamlined, phased task list tracking completed milestones and remaining deli
   - Success feedback indicators (toast / banner alerts)
 
 ### Phase 6.2: API Infrastructure, TanStack Query & Auth State
-- [ ] Install & configure dependencies (`@tanstack/react-query`, icons, utility libraries)
-- [ ] Setup `QueryClientProvider` and cache configuration in root layout
-- [ ] Build centralized API client (`lib/api-client.ts`):
+- [x] Install & configure dependencies (`@tanstack/react-query`, icons, utility libraries)
+- [x] Setup `QueryClientProvider` and cache configuration in root layout
+- [x] Build centralized API client (`lib/api-client.ts`):
   - Base URL configuration (`http://localhost:3001/api`)
   - Automatic JWT Bearer token injection from storage
   - Standardized error parsing matching backend `HttpExceptionFilter` structure (`statusCode`, `message`, `error`)
-- [ ] Implement Auth State Management (`context/auth-context.tsx` or hook):
+- [x] Implement Auth State Management (`context/auth-context.tsx` or hook):
   - Secure token persistence (localStorage / cookie)
   - Current user state (`user`, `isAuthenticated`, `isLoading`)
   - Session verification on mount via `GET /api/auth/me`
   - Login, register, and logout handlers
-- [ ] Implement Client-Side Route Protection:
+- [x] Implement Client-Side Route Protection:
   - Private routes (`/dashboard`, `/projects`, `/tasks`) -> redirect to `/login`
   - Public auth routes (`/login`, `/register`) -> redirect to `/dashboard` if authenticated
 
 ### Phase 6.3: Authentication Integration & Form Validation
-- [ ] Wire Register page to `POST /api/auth/register`:
+- [x] Wire Register page to `POST /api/auth/register`:
   - Form validation with inline error messaging
   - Submit button loading spinner & disabled state
   - Handle 400 validation error & 409 conflict error (duplicate email)
   - Auto-login and redirect to `/dashboard` on success
-- [ ] Wire Login page to `POST /api/auth/login`:
+- [x] Wire Login page to `POST /api/auth/login`:
   - Validation, submit spinner & disabled state
   - Handle 401 invalid credentials error alert
   - Store token, load user profile, redirect to `/dashboard`
-- [ ] Wire Header user profile menu to display current user details and perform Logout
+- [x] Wire Header user profile menu to display current user details and perform Logout
 
 ### Phase 6.4: Dashboard Data Integration
 - [ ] Wire `/dashboard` to `GET /api/dashboard/stats` via TanStack Query

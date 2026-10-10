@@ -1,16 +1,23 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { Suspense, useState } from 'react';
 import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { IconArrowRight, IconLock, IconMail } from '@tabler/icons-react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { AuthInput } from '@/components/ui/auth-input';
+import { useAuth } from '@/context/auth-context';
+import { getApiErrorMessage } from '@/lib/axios';
 import { LoginFormData, loginSchema } from '@/lib/validations/auth';
 
-export default function LoginPage() {
+function LoginForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { login } = useAuth();
 
   const {
     register,
@@ -26,12 +33,14 @@ export default function LoginPage() {
 
   const onSubmit = async (data: LoginFormData) => {
     setIsSubmitting(true);
-    setErrorMessage(null);
     try {
-      // Prepared for API integration in Phase 6.3
-      console.log('Login form submitted:', data);
+      await login(data);
+      toast.success('Signed in successfully');
+      const redirectUrl = searchParams.get('redirect') || '/dashboard';
+      router.push(redirectUrl);
     } catch (err: unknown) {
-      setErrorMessage(err instanceof Error ? err.message : 'Invalid email or password');
+      const message = getApiErrorMessage(err, 'Invalid email or password');
+      toast.error(message);
     } finally {
       setIsSubmitting(false);
     }
@@ -46,20 +55,6 @@ export default function LoginPage() {
           Enter your credentials to access your workspace and tasks.
         </p>
       </div>
-
-      {/* Error Alert Banner */}
-      {errorMessage && (
-        <div className="rounded-xl border border-red-200 bg-red-50 p-3.5 text-xs text-red-800 flex items-center justify-between">
-          <span>{errorMessage}</span>
-          <button
-            type="button"
-            onClick={() => setErrorMessage(null)}
-            className="text-red-600 hover:text-red-900 font-bold ml-2"
-          >
-            &times;
-          </button>
-        </div>
-      )}
 
       {/* Login Form */}
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
@@ -118,5 +113,13 @@ export default function LoginPage() {
         </Link>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="h-64 animate-pulse bg-zinc-100/60 rounded-2xl" />}>
+      <LoginForm />
+    </Suspense>
   );
 }

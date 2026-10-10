@@ -1,13 +1,13 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/context/auth-context';
 
 const PROTECTED_PREFIXES = ['/dashboard', '/projects', '/tasks'];
 const AUTH_ROUTES = ['/login', '/register'];
 
-export function RouteGuard({ children }: { children: React.ReactNode }) {
+function RouteGuardWatcher({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth();
   const pathname = usePathname();
   const router = useRouter();
@@ -35,7 +35,6 @@ export function RouteGuard({ children }: { children: React.ReactNode }) {
     }
   }, [isAuthenticated, isLoading, pathname, router]);
 
-  // While checking auth on protected routes (and not previewing), show subtle skeleton screen
   const isProtected = PROTECTED_PREFIXES.some(
     (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
   );
@@ -57,4 +56,12 @@ export function RouteGuard({ children }: { children: React.ReactNode }) {
   }
 
   return <>{children}</>;
+}
+
+export function RouteGuard({ children }: { children: React.ReactNode }) {
+  return (
+    <Suspense fallback={<>{children}</>}>
+      <RouteGuardWatcher>{children}</RouteGuardWatcher>
+    </Suspense>
+  );
 }

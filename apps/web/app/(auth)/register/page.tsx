@@ -1,16 +1,23 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { Suspense, useState } from 'react';
 import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { IconArrowRight, IconLock, IconMail, IconUser } from '@tabler/icons-react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { AuthInput } from '@/components/ui/auth-input';
+import { useAuth } from '@/context/auth-context';
+import { getApiErrorMessage } from '@/lib/axios';
 import { RegisterFormData, registerSchema } from '@/lib/validations/auth';
 
-export default function RegisterPage() {
+function RegisterForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { register: registerAccount } = useAuth();
 
   const {
     register,
@@ -28,14 +35,21 @@ export default function RegisterPage() {
 
   const onSubmit = async (data: RegisterFormData) => {
     setIsSubmitting(true);
-    setErrorMessage(null);
     try {
-      // Prepared for API integration in Phase 6.3
-      console.log('Register form submitted:', data);
+      await registerAccount({
+        name: data.name,
+        email: data.email,
+        password: data.password,
+      });
+      toast.success('Account created successfully');
+      const redirectUrl = searchParams.get('redirect') || '/dashboard';
+      router.push(redirectUrl);
     } catch (err: unknown) {
-      setErrorMessage(
-        err instanceof Error ? err.message : 'An account with this email already exists',
+      const message = getApiErrorMessage(
+        err,
+        'An account with this email address already exists',
       );
+      toast.error(message);
     } finally {
       setIsSubmitting(false);
     }
@@ -50,20 +64,6 @@ export default function RegisterPage() {
           Start collaborating on projects, assigning tasks, and tracking progress.
         </p>
       </div>
-
-      {/* Error Alert Banner */}
-      {errorMessage && (
-        <div className="rounded-xl border border-red-200 bg-red-50 p-3.5 text-xs text-red-800 flex items-center justify-between">
-          <span>{errorMessage}</span>
-          <button
-            type="button"
-            onClick={() => setErrorMessage(null)}
-            className="text-red-600 hover:text-red-900 font-bold ml-2"
-          >
-            &times;
-          </button>
-        </div>
-      )}
 
       {/* Register Form */}
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-3.5" noValidate>
@@ -93,7 +93,7 @@ export default function RegisterPage() {
           id="register-password"
           label="Password"
           icon={IconLock}
-          placeholder="At least 6 chars (Aa1...)"
+          placeholder="At least 8 chars (Aa1...)"
           type="password"
           autoComplete="new-password"
           error={errors.password?.message}
@@ -144,5 +144,13 @@ export default function RegisterPage() {
         </Link>
       </div>
     </div>
+  );
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense fallback={<div className="h-64 animate-pulse bg-zinc-100/60 rounded-2xl" />}>
+      <RegisterForm />
+    </Suspense>
   );
 }

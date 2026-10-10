@@ -1,11 +1,13 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import morgan from 'morgan';
 import { AppModule } from './app.module.js';
 import { setupSwagger } from './lib/swagger.js';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  app.use(morgan('dev'));
   app.enableCors();
   app.setGlobalPrefix('api');
 
