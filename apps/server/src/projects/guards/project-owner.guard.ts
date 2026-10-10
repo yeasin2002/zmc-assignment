@@ -22,21 +22,16 @@ export class ProjectOwnerGuard implements CanActivate {
       throw new BadRequestException('Project ID parameter is missing');
     }
 
-    const project = await this.prisma.project.findUnique({
-      where: { id: projectId },
-    });
-
-    if (!project) {
-      throw new NotFoundException('Project not found');
+    const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (!UUID_REGEX.test(projectId)) {
+      throw new BadRequestException('Invalid project ID format (UUID expected)');
     }
 
+    const project = await this.prisma.project.findUnique({ where: { id: projectId } });
+    if (!project) throw new NotFoundException('Project not found');
+
     const membership = await this.prisma.projectMember.findUnique({
-      where: {
-        projectId_userId: {
-          projectId,
-          userId: user.id,
-        },
-      },
+      where: { projectId_userId: { projectId, userId: user.id } },
     });
 
     if (!membership || membership.role !== ProjectRole.OWNER) {

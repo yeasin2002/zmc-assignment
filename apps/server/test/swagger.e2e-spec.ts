@@ -39,5 +39,7 @@ describe('Swagger Documentation (e2e)', () => {
     expect(response.body.paths).toHaveProperty('/api/auth/register');
     expect(response.body.paths).toHaveProperty('/api/auth/login');
     expect(response.body.paths).toHaveProperty('/api/auth/me');
+    expect(response.body.paths).toHaveProperty('/api/projects');
+    expect(response.body.paths).toHaveProperty('/api/dashboard/stats');
   });
 });

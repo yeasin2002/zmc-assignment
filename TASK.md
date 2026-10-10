@@ -70,12 +70,12 @@ A streamlined, phased task list tracking completed milestones and remaining deli
 
 ---
 
-## Phase 5: Dashboard & API Documentation
+## Phase 5: Dashboard 
 
-- [ ] Implement dashboard aggregation endpoint: `GET /api/dashboard/stats`
+- [x] Implement dashboard aggregation endpoint: `GET /api/dashboard/stats`
   - Project counts: Total projects, active projects
   - Task counts: Total tasks, completed tasks, pending tasks, high-priority tasks
-- [ ] Implement global HTTP exception filter for consistent error responses
+- [x] Implement global HTTP exception filter for consistent error responses
 
 ---
 
