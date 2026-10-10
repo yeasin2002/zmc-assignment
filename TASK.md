@@ -145,23 +145,23 @@ A streamlined, phased task list tracking completed milestones and remaining deli
 - [x] Wire Header user profile menu to display current user details and perform Logout
 
 ### Phase 6.4: Dashboard Data Integration
-- [ ] Wire `/dashboard` to `GET /api/dashboard/stats` via TanStack Query
-- [ ] Bind real metrics to stat cards:
+- [x] Wire `/dashboard` to `GET /api/dashboard/stats` via TanStack Query
+- [x] Bind real metrics to stat cards:
   - Total projects & active projects
   - Total tasks, completed tasks, pending tasks, high-priority tasks
-- [ ] Wire quick-access lists (active projects and pending tasks)
-- [ ] Implement query states (loading skeletons, error alert with retry button, empty state)
+- [x] Wire quick-access lists (active projects and pending tasks)
+- [x] Implement query states (loading skeletons, error alert with retry button, empty state)
 
 ### Phase 6.5: Projects & Member Management Integration
-- [ ] Projects List (`/projects`):
+- [x] Projects List (`/projects`):
   - Query `GET /api/projects` via TanStack Query
   - Display project cards with role indicator (`Owner` vs `Member`)
   - Project creation mutation (`POST /api/projects`) with modal form, cache invalidation & toast
-- [ ] Project Details (`/projects/[id]`):
+- [x] Project Details (`/projects/[id]`):
   - Query `GET /api/projects/:id` (handle 403 Forbidden / 404 Not Found gracefully)
   - Update project mutation (`PATCH /api/projects/:id`, restricted to Owner in UI)
   - Delete project mutation (`DELETE /api/projects/:id` with confirmation modal, Owner only)
-- [ ] Member Management (`/projects/[id]/members`):
+- [x] Member Management (`/projects/[id]/members`):
   - Query `GET /api/projects/:id/members`
   - Add member mutation (`POST /api/projects/:id/members` by email, Owner only, handle 404 user not found & 409 already member)
   - Remove member mutation (`DELETE /api/projects/:id/members/:userId`, Owner only, prevent owner removal)
