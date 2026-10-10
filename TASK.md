@@ -84,33 +84,33 @@ A streamlined, phased task list tracking completed milestones and remaining deli
 > **Context Alignment:** As specified in `CONTEXT.MD`, the UI does not need to be overly complex. Primary focus is on clean architecture, functionality, proper API integration, robust state handling, form validation, loading/error/empty states, and access control.
 
 ### Phase 6.1: Pure UI/UX Design & Static Mockups (No API Integration)
-- [ ] Setup clean design foundation (Tailwind CSS, clean fonts, curated palette, tokens)
-- [ ] Build reusable UI primitives focused on usability and clarity:
+- [x] Setup clean design foundation (Tailwind CSS, clean fonts, curated palette, tokens)
+- [x] Build reusable UI primitives focused on usability and clarity:
   - Button (with loading spinner state), Input, Textarea, Select
-  - Badges (Status: Todo / In Progress / Done; Priority: Low / Medium / High)
+  - Badges (Status: Todo / In Progress / Done; Priority: Low / Medium / High; Role: Owner / Member)
   - Modal / Dialog, Metric Stat Card, Skeleton Loaders, Alert Banner, Toast Notifications
-- [ ] Build responsive layout shell:
+- [x] Build responsive layout shell:
   - Header (app logo, navigation links, current user profile & logout trigger)
-  - Sidebar (Dashboard & Projects navigation, collapsible on mobile)
+  - Navigation between Dashboard & Projects
   - Content container with responsive padding and clean layout hierarchy
-- [ ] Build pure static Auth pages (mocked UI with input validation states):
-  - `/register` (Full Name, Email, Password, submit button, link to login)
+- [x] Build pure static Auth pages (mocked UI with input validation states):
+  - `/register` (Full Name, Email, Password, confirm password, submit button, link to login)
   - `/login` (Email, Password, submit button, link to register)
-- [ ] Build pure static Dashboard view (`/dashboard` mocked UI):
+- [x] Build pure static Dashboard view (`/dashboard` mocked UI):
   - Project stats card (Total projects, active projects)
   - Task stats cards (Total tasks, completed tasks, pending tasks, high-priority tasks)
   - Quick-access sections for active projects and pending tasks
-- [ ] Build pure static Projects views:
+- [x] Build pure static Projects views:
   - Projects list page (`/projects` cards with Owner/Member badge, task & member counts)
   - Create project modal dialog UI
   - Project detail page (`/projects/[id]` overview, edit project modal UI)
   - Project members panel UI (member list, role badges, add member modal UI, remove member button)
-- [ ] Build pure static Tasks view (`/projects/[id]/tasks`):
+- [x] Build pure static Tasks view (`/projects/[id]`):
   - Task query toolbar (search input, status filter dropdown, priority filter dropdown, assignee filter, sort selector)
   - Task list / table with status badges, priority badges, assignee chips, due dates
   - Task creation & edit modal dialog UI with all task fields
   - Pagination bar UI (previous, next, page indicator, limit selector)
-- [ ] Build all 4 essential UI states across pages:
+- [x] Build all 4 essential UI states across pages:
   - Loading skeleton states (table skeleton, card skeleton)
   - Error state alert with retry action
   - Informative empty states ("No projects yet", "No tasks found")
