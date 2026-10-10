@@ -39,7 +39,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 <span>Projects</span>
               </Link>
               <Link
-                href="/login"
+                href="/dashboard"
                 className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-medium text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100/60 transition-colors"
               >
                 <IconLayoutDashboard className="h-3.5 w-3.5" size={15} />
