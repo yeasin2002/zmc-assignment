@@ -1,10 +1,10 @@
 'use client';
 
 import React, { forwardRef, useState } from 'react';
-import { AlertCircle, Eye, EyeOff, LucideIcon } from 'lucide-react';
+import { IconAlertCircle, IconEye, IconEyeOff, type Icon, type TablerIcon } from '@tabler/icons-react';
 
 export interface AuthInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  icon?: LucideIcon | React.ComponentType<{ className?: string }>;
+  icon?: TablerIcon | Icon | React.ComponentType<{ className?: string; size?: number | string }>;
   label?: string;
   error?: string;
 }
@@ -30,7 +30,7 @@ export const AuthInput = forwardRef<HTMLInputElement, AuthInputProps>(
         <div className="relative">
           {Icon && (
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-zinc-400">
-              <Icon className="h-4 w-4" />
+              <Icon className="h-4 w-4" size={16} />
             </div>
           )}
 
@@ -57,9 +57,9 @@ export const AuthInput = forwardRef<HTMLInputElement, AuthInputProps>(
               aria-label={showPassword ? 'Hide password' : 'Show password'}
             >
               {showPassword ? (
-                <EyeOff className="h-4 w-4 text-zinc-500" />
+                <IconEyeOff className="h-4 w-4 text-zinc-500" size={16} />
               ) : (
-                <Eye className="h-4 w-4 text-zinc-500" />
+                <IconEye className="h-4 w-4 text-zinc-500" size={16} />
               )}
             </button>
           )}
@@ -70,7 +70,7 @@ export const AuthInput = forwardRef<HTMLInputElement, AuthInputProps>(
             className="flex items-center gap-1 text-xs font-medium text-red-600 pt-0.5"
             role="alert"
           >
-            <AlertCircle className="h-3.5 w-3.5 shrink-0" />
+            <IconAlertCircle className="h-3.5 w-3.5 shrink-0" size={14} />
             <span>{error}</span>
           </p>
         )}

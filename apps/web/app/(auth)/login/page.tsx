@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ArrowRight, Lock, Mail } from 'lucide-react';
+import { IconArrowRight, IconLock, IconMail } from '@tabler/icons-react';
 import { useForm } from 'react-hook-form';
 import { AuthInput } from '@/components/ui/auth-input';
 import { LoginFormData, loginSchema } from '@/lib/validations/auth';
@@ -66,7 +66,7 @@ export default function LoginPage() {
         <AuthInput
           id="login-email"
           label="Email Address"
-          icon={Mail}
+          icon={IconMail}
           placeholder="name@example.com"
           type="email"
           autoComplete="username"
@@ -77,7 +77,7 @@ export default function LoginPage() {
         <AuthInput
           id="login-password"
           label="Password"
-          icon={Lock}
+          icon={IconLock}
           placeholder="Enter your password"
           type="password"
           autoComplete="current-password"
@@ -100,7 +100,7 @@ export default function LoginPage() {
             ) : (
               <>
                 <span>Sign in to Workspace</span>
-                <ArrowRight className="h-4 w-4" />
+                <IconArrowRight className="h-4 w-4" size={16} />
               </>
             )}
           </button>

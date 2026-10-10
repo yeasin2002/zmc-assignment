@@ -1,6 +1,11 @@
 import React from 'react';
 import Link from 'next/link';
-import { CheckCircle2, FolderKanban, ShieldCheck, Sparkles } from 'lucide-react';
+import {
+  IconCircleCheck,
+  IconLayoutKanban,
+  IconShieldCheck,
+  IconSparkles,
+} from '@tabler/icons-react';
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -11,7 +16,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         <header className="flex items-center justify-between w-full">
           <Link href="/" className="inline-flex items-center gap-2.5 group">
             <div className="h-9 w-9 rounded-xl bg-black flex items-center justify-center text-white shadow-sm transition-transform group-hover:scale-105">
-              <FolderKanban className="h-5 w-5" />
+              <IconLayoutKanban className="h-5 w-5" size={20} />
             </div>
             <div>
               <span className="font-semibold text-base tracking-tight text-zinc-900 block leading-tight">
@@ -23,7 +28,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
             </div>
           </Link>
           <div className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-100 text-zinc-600 text-xs font-medium border border-zinc-200/60">
-            <ShieldCheck className="h-3.5 w-3.5 text-zinc-700" />
+            <IconShieldCheck className="h-3.5 w-3.5 text-zinc-700" size={14} />
             <span>Secure Access</span>
           </div>
         </header>
@@ -57,7 +62,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
           {/* Top Tag */}
           <div className="relative z-10">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#c1fbd4] text-black text-xs font-semibold tracking-wide uppercase shadow-sm">
-              <Sparkles className="h-3.5 w-3.5" />
+              <IconSparkles className="h-3.5 w-3.5" size={14} />
               <span>Project & Workload Orchestration</span>
             </div>
           </div>
@@ -93,7 +98,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
               </div>
               <div className="pt-2 border-t border-zinc-800/80 flex items-center justify-between text-xs text-zinc-400">
                 <span className="flex items-center gap-1.5 text-zinc-300">
-                  <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+                  <IconCircleCheck className="h-4 w-4 text-emerald-400" size={16} />
                   8 of 12 tasks completed
                 </span>
                 <span className="bg-zinc-800 text-zinc-300 px-2 py-0.5 rounded text-[11px] font-medium">

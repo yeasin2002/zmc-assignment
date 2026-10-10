@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ArrowRight, Lock, Mail, User } from 'lucide-react';
+import { IconArrowRight, IconLock, IconMail, IconUser } from '@tabler/icons-react';
 import { useForm } from 'react-hook-form';
 import { AuthInput } from '@/components/ui/auth-input';
 import { RegisterFormData, registerSchema } from '@/lib/validations/auth';
@@ -70,7 +70,7 @@ export default function RegisterPage() {
         <AuthInput
           id="register-name"
           label="Full Name"
-          icon={User}
+          icon={IconUser}
           placeholder="e.g. Jane Doe"
           type="text"
           autoComplete="name"
@@ -81,7 +81,7 @@ export default function RegisterPage() {
         <AuthInput
           id="register-email"
           label="Work Email"
-          icon={Mail}
+          icon={IconMail}
           placeholder="name@example.com"
           type="email"
           autoComplete="username"
@@ -92,7 +92,7 @@ export default function RegisterPage() {
         <AuthInput
           id="register-password"
           label="Password"
-          icon={Lock}
+          icon={IconLock}
           placeholder="At least 6 chars (Aa1...)"
           type="password"
           autoComplete="new-password"
@@ -103,7 +103,7 @@ export default function RegisterPage() {
         <AuthInput
           id="register-confirm-password"
           label="Confirm Password"
-          icon={Lock}
+          icon={IconLock}
           placeholder="Repeat your password"
           type="password"
           autoComplete="new-password"
@@ -126,7 +126,7 @@ export default function RegisterPage() {
             ) : (
               <>
                 <span>Get Started</span>
-                <ArrowRight className="h-4 w-4" />
+                <IconArrowRight className="h-4 w-4" size={16} />
               </>
             )}
           </button>
