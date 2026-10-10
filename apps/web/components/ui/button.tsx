@@ -1,62 +1,73 @@
-import React from 'react';
+'use client';
 
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'outline' | 'aloe' | 'danger' | 'ghost';
-  size?: 'sm' | 'md' | 'lg';
-  isLoading?: boolean;
-}
+import { cn } from '@/lib/utils';
+import { Button as ButtonPrimitive } from '@base-ui/react/button';
+import { cva, type VariantProps } from 'class-variance-authority';
+import * as React from 'react';
 
-export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  (
-    {
-      children,
-      variant = 'primary',
-      size = 'md',
-      isLoading = false,
-      disabled,
-      className = '',
-      ...props
+const buttonVariants = cva(
+  'inline-flex shrink-0 items-center justify-center gap-2 rounded-full font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:ring-2 focus-visible:ring-offset-1 active:scale-[0.99] disabled:pointer-events-none disabled:opacity-50 cursor-pointer [&_svg]:pointer-events-none [&_svg]:shrink-0',
+  {
+    variants: {
+      variant: {
+        // button-primary-pill from DESIGN.md
+        default: 'bg-black text-white hover:bg-neutral-800 focus-visible:ring-black shadow-xs',
+        primary: 'bg-black text-white hover:bg-neutral-800 focus-visible:ring-black shadow-xs',
+        // button-outline-on-light from DESIGN.md
+        outline:
+          'border border-zinc-200/90 bg-white text-zinc-900 hover:bg-zinc-50 hover:border-zinc-300 focus-visible:ring-zinc-400 shadow-2xs',
+        // button-aloe-pill from DESIGN.md
+        aloe: 'bg-[#c1fbd4] text-zinc-950 hover:bg-[#a9f5c2] focus-visible:ring-emerald-400 font-semibold shadow-xs',
+        // destructive & danger
+        destructive: 'bg-red-600 text-white hover:bg-red-700 focus-visible:ring-red-500 shadow-xs',
+        danger: 'bg-red-600 text-white hover:bg-red-700 focus-visible:ring-red-500 shadow-xs',
+        secondary: 'bg-zinc-100 text-zinc-900 hover:bg-zinc-200/80 focus-visible:ring-zinc-400',
+        ghost:
+          'bg-transparent text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900 focus-visible:ring-zinc-300',
+        link: 'text-zinc-900 underline-offset-4 hover:underline p-0 h-auto',
+      },
+      size: {
+        default: 'py-2.5 px-5 text-xs sm:text-sm',
+        sm: 'py-1.5 px-3.5 text-xs',
+        lg: 'py-3.5 px-7 text-sm sm:text-base font-semibold',
+        icon: 'h-8 w-8 p-0',
+        'icon-sm': 'h-7 w-7 p-0',
+        'icon-lg': 'h-9 w-9 p-0',
+      },
     },
-    ref,
-  ) => {
-    // DESIGN.md: "Pill-shape ({rounded.pill}) is the only button shape across both tracks"
-    const baseStyles =
-      'inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all focus:outline-none focus:ring-2 focus:ring-offset-1 active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none cursor-pointer';
-
-    const variantStyles = {
-      // button-primary-pill
-      primary: 'bg-black text-white hover:bg-neutral-800 focus:ring-black shadow-xs',
-      // button-outline-on-light
-      outline:
-        'border border-zinc-200/90 bg-white text-zinc-900 hover:bg-zinc-50 hover:border-zinc-300 focus:ring-zinc-400 shadow-2xs',
-      // button-aloe-pill
-      aloe: 'bg-[#c1fbd4] text-zinc-950 hover:bg-[#a9f5c2] focus:ring-emerald-400 font-semibold shadow-xs',
-      // danger pill
-      danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 shadow-xs',
-      // ghost
-      ghost: 'bg-transparent text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900 focus:ring-zinc-300',
-    }[variant];
-
-    const sizeStyles = {
-      sm: 'py-1.5 px-3.5 text-xs',
-      md: 'py-2.5 px-5 text-xs sm:text-sm',
-      lg: 'py-3.5 px-7 text-sm sm:text-base font-semibold',
-    }[size];
-
-    return (
-      <button
-        ref={ref}
-        disabled={disabled || isLoading}
-        className={`${baseStyles} ${variantStyles} ${sizeStyles} ${className}`}
-        {...props}
-      >
-        {isLoading && (
-          <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent shrink-0" />
-        )}
-        <span>{children}</span>
-      </button>
-    );
+    defaultVariants: {
+      variant: 'default',
+      size: 'default',
+    },
   },
 );
 
-Button.displayName = 'Button';
+export interface ButtonProps extends ButtonPrimitive.Props, VariantProps<typeof buttonVariants> {
+  isLoading?: boolean;
+}
+
+function Button({
+  className,
+  variant = 'default',
+  size = 'default',
+  isLoading = false,
+  disabled,
+  children,
+  ...props
+}: ButtonProps) {
+  return (
+    <ButtonPrimitive
+      data-slot="button"
+      disabled={disabled || isLoading}
+      className={cn(buttonVariants({ variant, size, className }))}
+      {...props}
+    >
+      {isLoading && (
+        <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent shrink-0" />
+      )}
+      {children}
+    </ButtonPrimitive>
+  );
+}
+
+export { Button, buttonVariants };

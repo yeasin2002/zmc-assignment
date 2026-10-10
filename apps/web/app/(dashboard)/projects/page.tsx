@@ -13,7 +13,14 @@ import {
 import { RoleBadge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/ui/empty-state';
-import { Modal } from '@/components/ui/modal';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 
 export default function ProjectsPage() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -200,58 +207,62 @@ export default function ProjectsPage() {
         </div>
       )}
 
-      {/* Create Project Modal Dialog UI */}
-      <Modal
-        isOpen={isCreateModalOpen}
-        onClose={() => setIsCreateModalOpen(false)}
-        title="Create New Project"
-        description="Set up a new project space to organize tasks and collaborate with members."
-      >
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            setIsCreateModalOpen(false);
-          }}
-          className="space-y-4"
-        >
-          <div className="space-y-1.5">
-            <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-600">
-              Project Title
-            </label>
-            <input
-              type="text"
-              required
-              placeholder="e.g. Mobile App Redesign"
-              className="w-full rounded-xl border border-zinc-200 bg-white py-2.5 px-3.5 text-sm text-zinc-900 placeholder:text-zinc-400 outline-none focus:border-zinc-900 focus:ring-2 focus:ring-zinc-900/10"
-            />
-          </div>
+      {/* Create Project Dialog UI */}
+      <Dialog open={isCreateModalOpen} onOpenChange={setIsCreateModalOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Create New Project</DialogTitle>
+            <DialogDescription>
+              Set up a new project space to organize tasks and collaborate with members.
+            </DialogDescription>
+          </DialogHeader>
 
-          <div className="space-y-1.5">
-            <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-600">
-              Description
-            </label>
-            <textarea
-              rows={3}
-              placeholder="Describe the goals, deliverables, and scope of this project..."
-              className="w-full rounded-xl border border-zinc-200 bg-white py-2.5 px-3.5 text-sm text-zinc-900 placeholder:text-zinc-400 outline-none focus:border-zinc-900 focus:ring-2 focus:ring-zinc-900/10 resize-none"
-            />
-          </div>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              setIsCreateModalOpen(false);
+            }}
+            className="space-y-4"
+          >
+            <div className="space-y-1.5">
+              <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-600">
+                Project Title
+              </label>
+              <input
+                type="text"
+                required
+                placeholder="e.g. Mobile App Redesign"
+                className="w-full rounded-xl border border-zinc-200 bg-white py-2.5 px-3.5 text-sm text-zinc-900 placeholder:text-zinc-400 outline-none focus:border-zinc-900 focus:ring-2 focus:ring-zinc-900/10"
+              />
+            </div>
 
-          <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-zinc-100">
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => setIsCreateModalOpen(false)}
-            >
-              Cancel
-            </Button>
-            <Button type="submit" size="sm">
-              Create Project
-            </Button>
-          </div>
-        </form>
-      </Modal>
+            <div className="space-y-1.5">
+              <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-600">
+                Description
+              </label>
+              <textarea
+                rows={3}
+                placeholder="Describe the goals, deliverables, and scope of this project..."
+                className="w-full rounded-xl border border-zinc-200 bg-white py-2.5 px-3.5 text-sm text-zinc-900 placeholder:text-zinc-400 outline-none focus:border-zinc-900 focus:ring-2 focus:ring-zinc-900/10 resize-none"
+              />
+            </div>
+
+            <DialogFooter>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setIsCreateModalOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button type="submit" size="sm">
+                Create Project
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

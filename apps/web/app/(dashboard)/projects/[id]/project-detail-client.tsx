@@ -16,8 +16,15 @@ import {
 } from '@tabler/icons-react';
 import { PriorityBadge, RoleBadge, StatusBadge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { EmptyState } from '@/components/ui/empty-state';
-import { Modal } from '@/components/ui/modal';
 
 interface TaskItem {
   id: string;
@@ -545,164 +552,170 @@ export default function ProjectDetailClient({ id }: { id: string }) {
         </div>
       )}
 
-      {/* Task Modal (Create / Edit) */}
-      <Modal
-        isOpen={isTaskModalOpen}
-        onClose={() => setIsTaskModalOpen(false)}
-        title={selectedTask ? 'Edit Task' : 'Create New Task'}
-        description={
-          selectedTask
-            ? 'Update task details, assignment, and completion status.'
-            : 'Add a new task deliverable to this workspace.'
-        }
-      >
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            setIsTaskModalOpen(false);
-          }}
-          className="space-y-4"
-        >
-          <div className="space-y-1.5">
-            <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-600">
-              Task Title
-            </label>
-            <input
-              type="text"
-              required
-              defaultValue={selectedTask?.title || ''}
-              placeholder="e.g. Implement user authentication"
-              className="w-full rounded-xl border border-zinc-200 bg-white py-2.5 px-3.5 text-sm text-zinc-900 outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900"
-            />
-          </div>
+      {/* Task Dialog (Create / Edit) */}
+      <Dialog open={isTaskModalOpen} onOpenChange={setIsTaskModalOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{selectedTask ? 'Edit Task' : 'Create New Task'}</DialogTitle>
+            <DialogDescription>
+              {selectedTask
+                ? 'Update task details, assignment, and completion status.'
+                : 'Add a new task deliverable to this workspace.'}
+            </DialogDescription>
+          </DialogHeader>
 
-          <div className="space-y-1.5">
-            <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-600">
-              Description
-            </label>
-            <textarea
-              rows={3}
-              defaultValue={selectedTask?.description || ''}
-              placeholder="Detailed task description..."
-              className="w-full rounded-xl border border-zinc-200 bg-white py-2.5 px-3.5 text-sm text-zinc-900 outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 resize-none"
-            />
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              setIsTaskModalOpen(false);
+            }}
+            className="space-y-4"
+          >
             <div className="space-y-1.5">
               <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-600">
-                Status
-              </label>
-              <select
-                defaultValue={selectedTask?.status || 'Todo'}
-                className="w-full rounded-xl border border-zinc-200 bg-white py-2 px-3 text-sm text-zinc-800 outline-none focus:border-zinc-900"
-              >
-                <option value="Todo">Todo</option>
-                <option value="In Progress">In Progress</option>
-                <option value="Done">Done</option>
-              </select>
-            </div>
-
-            <div className="space-y-1.5">
-              <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-600">
-                Priority
-              </label>
-              <select
-                defaultValue={selectedTask?.priority || 'Medium'}
-                className="w-full rounded-xl border border-zinc-200 bg-white py-2 px-3 text-sm text-zinc-800 outline-none focus:border-zinc-900"
-              >
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-                <option value="High">High</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-1.5">
-              <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-600">
-                Assignee
-              </label>
-              <select
-                defaultValue={selectedTask?.assignee || 'Unassigned'}
-                className="w-full rounded-xl border border-zinc-200 bg-white py-2 px-3 text-sm text-zinc-800 outline-none focus:border-zinc-900"
-              >
-                <option value="Unassigned">Unassigned</option>
-                <option value="Owner User">Owner User</option>
-                <option value="Member User 1">Member User 1</option>
-                <option value="Member User 2">Member User 2</option>
-              </select>
-            </div>
-
-            <div className="space-y-1.5">
-              <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-600">
-                Due Date
+                Task Title
               </label>
               <input
-                type="date"
-                defaultValue="2026-10-20"
-                className="w-full rounded-xl border border-zinc-200 bg-white py-2 px-3 text-sm text-zinc-800 outline-none focus:border-zinc-900"
+                type="text"
+                required
+                defaultValue={selectedTask?.title || ''}
+                placeholder="e.g. Implement user authentication"
+                className="w-full rounded-xl border border-zinc-200 bg-white py-2.5 px-3.5 text-sm text-zinc-900 outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900"
               />
             </div>
-          </div>
 
-          <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-zinc-100">
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => setIsTaskModalOpen(false)}
-            >
-              Cancel
-            </Button>
-            <Button type="submit" size="sm">
-              {selectedTask ? 'Update Task' : 'Create Task'}
-            </Button>
-          </div>
-        </form>
-      </Modal>
+            <div className="space-y-1.5">
+              <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-600">
+                Description
+              </label>
+              <textarea
+                rows={3}
+                defaultValue={selectedTask?.description || ''}
+                placeholder="Detailed task description..."
+                className="w-full rounded-xl border border-zinc-200 bg-white py-2.5 px-3.5 text-sm text-zinc-900 outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 resize-none"
+              />
+            </div>
 
-      {/* Add Member Modal */}
-      <Modal
-        isOpen={isMemberModalOpen}
-        onClose={() => setIsMemberModalOpen(false)}
-        title="Add Project Member"
-        description="Invite an active user to collaborate on tasks in this workspace."
-      >
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            setIsMemberModalOpen(false);
-          }}
-          className="space-y-4"
-        >
-          <div className="space-y-1.5">
-            <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-600">
-              User Email Address
-            </label>
-            <input
-              type="email"
-              required
-              placeholder="e.g. member@example.com"
-              className="w-full rounded-xl border border-zinc-200 bg-white py-2.5 px-3.5 text-sm text-zinc-900 placeholder:text-zinc-400 outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900"
-            />
-          </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-600">
+                  Status
+                </label>
+                <select
+                  defaultValue={selectedTask?.status || 'Todo'}
+                  className="w-full rounded-xl border border-zinc-200 bg-white py-2 px-3 text-sm text-zinc-800 outline-none focus:border-zinc-900"
+                >
+                  <option value="Todo">Todo</option>
+                  <option value="In Progress">In Progress</option>
+                  <option value="Done">Done</option>
+                </select>
+              </div>
 
-          <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-zinc-100">
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => setIsMemberModalOpen(false)}
-            >
-              Cancel
-            </Button>
-            <Button type="submit" size="sm">
-              Add Member
-            </Button>
-          </div>
-        </form>
-      </Modal>
+              <div className="space-y-1.5">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-600">
+                  Priority
+                </label>
+                <select
+                  defaultValue={selectedTask?.priority || 'Medium'}
+                  className="w-full rounded-xl border border-zinc-200 bg-white py-2 px-3 text-sm text-zinc-800 outline-none focus:border-zinc-900"
+                >
+                  <option value="Low">Low</option>
+                  <option value="Medium">Medium</option>
+                  <option value="High">High</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-600">
+                  Assignee
+                </label>
+                <select
+                  defaultValue={selectedTask?.assignee || 'Unassigned'}
+                  className="w-full rounded-xl border border-zinc-200 bg-white py-2 px-3 text-sm text-zinc-800 outline-none focus:border-zinc-900"
+                >
+                  <option value="Unassigned">Unassigned</option>
+                  <option value="Owner User">Owner User</option>
+                  <option value="Member User 1">Member User 1</option>
+                  <option value="Member User 2">Member User 2</option>
+                </select>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-600">
+                  Due Date
+                </label>
+                <input
+                  type="date"
+                  defaultValue="2026-10-20"
+                  className="w-full rounded-xl border border-zinc-200 bg-white py-2 px-3 text-sm text-zinc-800 outline-none focus:border-zinc-900"
+                />
+              </div>
+            </div>
+
+            <DialogFooter>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setIsTaskModalOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button type="submit" size="sm">
+                {selectedTask ? 'Update Task' : 'Create Task'}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* Add Member Dialog */}
+      <Dialog open={isMemberModalOpen} onOpenChange={setIsMemberModalOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Add Project Member</DialogTitle>
+            <DialogDescription>
+              Invite an active user to collaborate on tasks in this workspace.
+            </DialogDescription>
+          </DialogHeader>
+
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              setIsMemberModalOpen(false);
+            }}
+            className="space-y-4"
+          >
+            <div className="space-y-1.5">
+              <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-600">
+                User Email Address
+              </label>
+              <input
+                type="email"
+                required
+                placeholder="e.g. member@example.com"
+                className="w-full rounded-xl border border-zinc-200 bg-white py-2.5 px-3.5 text-sm text-zinc-900 placeholder:text-zinc-400 outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900"
+              />
+            </div>
+
+            <DialogFooter>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setIsMemberModalOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button type="submit" size="sm">
+                Add Member
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
