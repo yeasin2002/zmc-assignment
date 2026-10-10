@@ -1,6 +1,9 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
+import { QueryProvider } from '@/components/providers/query-provider';
+import { AuthProvider } from '@/context/auth-context';
+import { RouteGuard } from '@/components/auth/route-guard';
 import { cn } from '@/lib/utils';
 
 const inter = Inter({
@@ -19,7 +22,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={cn('h-full antialiased font-sans', inter.variable)}>
       <body className="min-h-full flex flex-col bg-[#fbfbf5] text-zinc-950 antialiased selection:bg-[#c1fbd4] selection:text-black">
-        {children}
+        <QueryProvider>
+          <AuthProvider>
+            <RouteGuard>{children}</RouteGuard>
+          </AuthProvider>
+        </QueryProvider>
       </body>
     </html>
   );
