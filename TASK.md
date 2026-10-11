@@ -210,10 +210,13 @@ A streamlined, phased task list tracking completed milestones and remaining deli
 
 - [x] Write backend unit & service tests (Auth, Authorization guards, Task assignment validation)
 - [x] Write integration / e2e tests for core workflows
-- [ ] Update root `README.md` with:
+- [x] Update root `README.md` with:
   - Architectural summary & design decisions
   - Local setup guide (Podman / Node / pnpm)
   - Migration & seed commands
   - Seed test accounts (`owner@example.com`, etc.)
   - Test run instructions
+- [x] Update `apps/server/README.md` (Module structure, REST API, Swagger, Schema, RBAC)
+- [x] Update `apps/web/README.md` (Next.js 16 App Router, 2-Layer API pattern, Auth lifecycle, UI design)
+- [x] Update `AGENTS.md` with implemented engineering conventions and standards
 

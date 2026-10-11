@@ -34,6 +34,7 @@
 17. [Time Limit & Expectations](#17-time-limit)
 18. [Prioritization & Incomplete Features Policy](#18-incomplete-features-are-okay)
 19. [Evaluation Criteria & Review Focus](#19-what-we-expect)
+20. [Implemented Engineering Conventions & Project Guidelines](#20-implemented-engineering-conventions--project-guidelines)
 
 ---
 
@@ -510,3 +511,49 @@ Submissions will be assessed across five core criteria:
 | **3. Authorization & Security**       | Robust backend authorization guards; verification of project membership before accessing tasks/members; secure password handling and JWT validation. |
 | **4. Code Quality & TypeScript**      | Strict TypeScript usage, meaningful naming, clear DTOs and interfaces, predictable error handling, DRY principles without over-engineering.          |
 | **5. Practical Problem Solving & UX** | Realistic handling of loading, error, and empty states; sensible pagination/filtering; solid documentation; clear technical reasoning.               |
+
+---
+
+## 20. Implemented Engineering Conventions & Project Guidelines
+
+The following conventions, design patterns, and standards are strictly established across this repository:
+
+### A. Monorepo & Workspace Conventions
+- **Tooling:** Monorepo managed using **Turborepo** with **pnpm** workspaces (`apps/server`, `apps/web`).
+- **Ports & Containers:**
+  - Backend API: `http://localhost:3001`
+  - Frontend Web: `http://localhost:3000`
+  - PostgreSQL Database: Port `5432`, managed via Podman (`podman compose up -d`) or Docker (`docker compose up -d`).
+- **Scripts:** Standardized root helper scripts (`pnpm run dev`, `pnpm run build`, `pnpm run lint`, `pnpm run db:up`, `pnpm run db:migrate`, `pnpm run db:seed`).
+
+### B. Backend Engineering Standards (NestJS)
+- **Thin Controllers:** Controllers only handle HTTP transport, routing, and DTO extraction. They never query Prisma or execute business rules directly.
+- **Rich Domain Services:** Multi-step business processes (e.g., verifying if an assignee is an active project member before attaching them to a task) reside in services.
+- **DTO Validation:** Global `ValidationPipe` with `{ whitelist: true, transform: true }`. Every payload uses `class-validator` and `class-transformer`.
+- **Defensive RBAC:**
+  - `@CurrentUser()` custom decorator extracts authenticated user identity.
+  - `@ProjectRole('OWNER' | 'MEMBER')` paired with `ProjectMemberGuard` and `ProjectOwnerGuard` ensures ownership verification at the service and guard layer.
+- **Uniform Error Envelope:** Handled via global `AllExceptionsFilter`, returning consistent JSON structures (`statusCode`, `message`, `error`, `timestamp`, `path`).
+- **OpenAPI / Swagger:** Kept in sync via `@nestjs/swagger` decorators and accessible at `/api/docs`.
+
+### C. Frontend Engineering Standards (Next.js 16)
+- **Two-Layer API Architecture:**
+  - **Layer 1 — Query List (`api/query-list/`):** Pure Axios functions and TypeScript response/DTO types. Zero React hooks, zero JSX. Safe parameter construction using `URLSearchParams`.
+  - **Layer 2 — API Hooks (`api/api-hooks/`):** TanStack Query hooks (`useQuery`, `useMutation`). Top-level query key constants (`PROJECT_KEYS`, `TASK_KEYS`, `DASHBOARD_KEYS`), automatic cache invalidation on mutations, and Sonner toast notifications.
+- **URL-Driven State:** Filter parameters (`search`, `status`, `priority`, `assigneeId`, `sortBy`, `order`, `page`) are synced with URL search params to ensure views are bookmarkable and shareable.
+- **Balanced Component Sizing:** Maintain components under ~350 lines by breaking complex screens into focused subcomponents (`tasks-table.tsx`, `task-modal.tsx`, `delete-task-dialog.tsx`, `project-members-tab.tsx`, `project-settings-tab.tsx`).
+- **Anti-Pattern Avoidance:**
+  - **No `useEffect` Form Syncing:** Forms reset naturally using component keying (`key={taskToEdit?.id ?? 'create-task'}`) instead of `useEffect` setState syncing.
+  - **Reactive Auth Syncing:** On `401 Unauthorized`, Axios purges the token and dispatches a storage event. `AuthContext` listens and triggers Next.js `router.replace('/login?redirect=...')` without hardcoding `window.location.href`.
+  - **Next.js 16 Instant Navigations:** Redirect pages opt out of prerender instant validation via `export const instant = false;`, and root redirects are registered in `next.config.ts`.
+
+### D. UI/UX Design System Standards
+- **Strict Light Mode Palette:** Soft neutral canvas (`#fbfbf5`), elevated card surfaces (`#ffffff`), and slate typography.
+- **Icon Set Consistency:** Exclusively use Tabler Icons (`@tabler/icons-react`). Never mix icon libraries.
+- **Feedback & Notifications:** Use Sonner toasts (`toast.success()`, `toast.error()`) for mutation feedback. Avoid hardcoded inline alert banners in forms.
+- **Four Mandatory UI States:** Every data-fetching screen explicitly implements:
+  1. *Loading State:* Contextual skeleton placeholders.
+  2. *Error State:* Inline alert with retry action.
+  3. *Empty State:* Descriptive illustration/icon with call-to-action button.
+  4. *Success State:* Clean table/cards with instant cache invalidation.
+
