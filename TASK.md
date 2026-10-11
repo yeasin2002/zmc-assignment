@@ -193,15 +193,15 @@ A streamlined, phased task list tracking completed milestones and remaining deli
   - Instant optimistic or query-invalidated updates
 
 ### Phase 6.7: Frontend Quality Assurance & Verification
-- [ ] Role-Based Access Control Verification:
+- [x] Role-Based Access Control Verification:
   - Owner capabilities test (update project, delete project, manage members, delete tasks)
   - Regular Member restrictions test (view project, create tasks, update status/assignment, no delete/member buttons)
-- [ ] Security & Error Boundary Verification:
+- [x] Security & Error Boundary Verification:
   - URL tampering test: navigate to unauthorized project ID -> clear 403/404 forbidden screen
   - Token expiration / invalid token test -> clean redirect to login
-- [ ] Form validation edge cases (empty titles, invalid emails, weak passwords, invalid dates)
-- [ ] Responsive design testing (mobile drawer/sidebar, responsive task tables and cards)
-- [ ] Build & Lint verification: Run `pnpm run build` and `pnpm run lint` across entire monorepo
+- [x] Form validation edge cases (empty titles, invalid emails, weak passwords, invalid dates)
+- [x] Responsive design testing (mobile drawer/sidebar, responsive task tables and cards)
+- [x] Build & Lint verification: Run `pnpm run build` and `pnpm run lint` across entire monorepo
 
 
 ---

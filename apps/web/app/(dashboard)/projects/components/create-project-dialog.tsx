@@ -58,6 +58,7 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
             <input
               type="text"
               required
+              maxLength={255}
               disabled={createProjectMutation.isPending}
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -72,6 +73,7 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
             </label>
             <textarea
               rows={3}
+              maxLength={2000}
               disabled={createProjectMutation.isPending}
               value={description}
               onChange={(e) => setDescription(e.target.value)}

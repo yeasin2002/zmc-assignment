@@ -87,6 +87,7 @@ export function ProjectSettingsTab({ project, isOwner }: ProjectSettingsTabProps
             <input
               type="text"
               required
+              maxLength={255}
               disabled={!isOwner || updateProjectMutation.isPending}
               value={projectName}
               onChange={(e) => setProjectName(e.target.value)}
@@ -100,6 +101,7 @@ export function ProjectSettingsTab({ project, isOwner }: ProjectSettingsTabProps
             </label>
             <textarea
               rows={3}
+              maxLength={2000}
               disabled={!isOwner || updateProjectMutation.isPending}
               value={projectDescription}
               onChange={(e) => setProjectDescription(e.target.value)}

@@ -49,6 +49,7 @@ axiosClient.interceptors.response.use(
         window.location.pathname === '/login' || window.location.pathname === '/register';
       if (!isAuthRoute) {
         removeAuthToken();
+        window.dispatchEvent(new Event('storage'));
       }
     }
     return Promise.reject(error);

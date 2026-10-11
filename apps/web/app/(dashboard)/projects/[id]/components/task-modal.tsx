@@ -98,6 +98,7 @@ function TaskForm({
         <input
           type="text"
           required
+          maxLength={255}
           disabled={isPending}
           value={title}
           onChange={(e) => setTitle(e.target.value)}
@@ -113,6 +114,7 @@ function TaskForm({
         </label>
         <textarea
           rows={3}
+          maxLength={2000}
           disabled={isPending}
           value={description}
           onChange={(e) => setDescription(e.target.value)}

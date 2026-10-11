@@ -1,6 +1,6 @@
 'use client';
 
-import React, { Suspense } from 'react';
+import React, { Suspense, useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
@@ -8,6 +8,8 @@ import {
   IconLayoutDashboard,
   IconLayoutKanban,
   IconLogout,
+  IconMenu2,
+  IconX,
 } from '@tabler/icons-react';
 import { toast } from 'sonner';
 import { useAuth } from '@/context/auth-context';
@@ -16,6 +18,7 @@ function HeaderContent() {
   const pathname = usePathname();
   const router = useRouter();
   const { user, logout } = useAuth();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
@@ -39,7 +42,7 @@ function HeaderContent() {
   return (
     <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-zinc-200/80 px-4 sm:px-8 py-3.5">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        {/* Left: Brand & Main Navigation */}
+        {/* Left: Brand & Desktop Navigation */}
         <div className="flex items-center gap-8">
           <Link href="/projects" className="inline-flex items-center gap-2.5 group">
             <div className="h-8 w-8 rounded-xl bg-black flex items-center justify-center text-white shadow-sm transition-transform group-hover:scale-105">
@@ -55,7 +58,7 @@ function HeaderContent() {
             </div>
           </Link>
 
-          {/* Navigation Links */}
+          {/* Desktop Navigation Links */}
           <nav className="hidden md:flex items-center gap-1">
             <Link
               href="/projects"
@@ -82,13 +85,13 @@ function HeaderContent() {
           </nav>
         </div>
 
-        {/* Right: User Profile & Actions */}
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-zinc-50 border border-zinc-200/60 text-xs text-zinc-700">
+        {/* Right: User Profile, Actions & Mobile Toggle */}
+        <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-2 sm:gap-2.5 px-2.5 sm:px-3 py-1.5 rounded-full bg-zinc-50 border border-zinc-200/60 text-xs text-zinc-700">
             <div className="h-5 w-5 rounded-full bg-black text-white text-[10px] font-bold flex items-center justify-center">
               {initials}
             </div>
-            <span className="font-medium text-zinc-800 max-w-[130px] truncate">
+            <span className="font-medium text-zinc-800 max-w-[100px] sm:max-w-[130px] truncate">
               {user?.name || 'Workspace User'}
             </span>
             <span className="hidden sm:inline-block text-[10px] uppercase font-semibold tracking-wider text-emerald-800 bg-[#c1fbd4] px-1.5 py-0.5 rounded-md">
@@ -101,12 +104,67 @@ function HeaderContent() {
             onClick={handleLogout}
             aria-label="Sign out"
             title="Sign out"
-            className="inline-flex items-center justify-center h-8 w-8 rounded-full border border-zinc-200/80 bg-white text-zinc-600 hover:text-red-600 hover:border-red-200 hover:bg-red-50/50 transition-colors shadow-xs cursor-pointer"
+            className="hidden sm:inline-flex items-center justify-center h-8 w-8 rounded-full border border-zinc-200/80 bg-white text-zinc-600 hover:text-red-600 hover:border-red-200 hover:bg-red-50/50 transition-colors shadow-xs cursor-pointer"
           >
             <IconLogout className="h-4 w-4" size={16} />
           </button>
+
+          {/* Mobile Menu Hamburger Button */}
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen((prev) => !prev)}
+            aria-label="Toggle mobile navigation menu"
+            className="inline-flex md:hidden items-center justify-center h-8 w-8 rounded-full border border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-100 transition-colors cursor-pointer"
+          >
+            {mobileMenuOpen ? (
+              <IconX className="h-4 w-4" size={18} />
+            ) : (
+              <IconMenu2 className="h-4 w-4" size={18} />
+            )}
+          </button>
         </div>
       </div>
+
+      {/* Mobile Navigation Drawer / Dropdown */}
+      {mobileMenuOpen && (
+        <div className="md:hidden border-t border-zinc-100 mt-3 pt-3 space-y-2 animate-in fade-in slide-in-from-top-2 duration-150">
+          <Link
+            href="/projects"
+            onClick={() => setMobileMenuOpen(false)}
+            className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm transition-colors ${
+              isProjectsActive
+                ? 'font-semibold text-zinc-950 bg-zinc-100'
+                : 'text-zinc-600 hover:bg-zinc-50'
+            }`}
+          >
+            <IconFolders className="h-4 w-4 text-zinc-500" size={18} />
+            <span>Projects Workspaces</span>
+          </Link>
+          <Link
+            href="/dashboard"
+            onClick={() => setMobileMenuOpen(false)}
+            className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm transition-colors ${
+              isDashboardActive
+                ? 'font-semibold text-zinc-950 bg-zinc-100'
+                : 'text-zinc-600 hover:bg-zinc-50'
+            }`}
+          >
+            <IconLayoutDashboard className="h-4 w-4 text-zinc-500" size={18} />
+            <span>Workspace Dashboard</span>
+          </Link>
+          <button
+            type="button"
+            onClick={() => {
+              setMobileMenuOpen(false);
+              handleLogout();
+            }}
+            className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-red-600 hover:bg-red-50/60 transition-colors cursor-pointer"
+          >
+            <IconLogout className="h-4 w-4 text-red-500" size={18} />
+            <span>Sign Out</span>
+          </button>
+        </div>
+      )}
     </header>
   );
 }
