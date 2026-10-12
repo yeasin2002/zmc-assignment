@@ -49,7 +49,7 @@ function DialogContent({
       <DialogPrimitive.Popup
         data-slot="dialog-content"
         className={cn(
-          'fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-5 rounded-2xl bg-white p-6 sm:p-8 text-zinc-900 border border-zinc-200/90 shadow-xl duration-150 outline-none sm:max-w-lg data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 max-h-[90vh] overflow-y-auto',
+          'fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-5 rounded-lg bg-white p-6 sm:p-8 text-black border border-zinc-300 shadow-2xl duration-150 outline-none sm:max-w-lg data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 max-h-[90vh] overflow-y-auto',
           className,
         )}
         {...props}
@@ -61,7 +61,7 @@ function DialogContent({
             render={
               <Button
                 variant="ghost"
-                className="absolute top-4 right-4 text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100 rounded-full h-8 w-8 p-0 cursor-pointer"
+                className="absolute top-4 right-4 text-zinc-400 hover:text-black hover:bg-zinc-100 rounded-md h-8 w-8 p-0 cursor-pointer"
                 size="icon-sm"
               />
             }
@@ -116,7 +116,7 @@ function DialogTitle({ className, ...props }: DialogPrimitive.Title.Props) {
   return (
     <DialogPrimitive.Title
       data-slot="dialog-title"
-      className={cn('text-xl font-semibold tracking-tight text-zinc-900', className)}
+      className={cn('text-xl font-heading font-semibold tracking-tight text-black', className)}
       {...props}
     />
   );

@@ -63,9 +63,9 @@ export function ProjectSettingsTab({ project, isOwner }: ProjectSettingsTabProps
 
   return (
     <div className="space-y-6">
-      <div className="bg-white rounded-2xl border border-zinc-200/80 p-6 sm:p-8 space-y-6 shadow-2xs">
-        <div className="border-b border-zinc-100 pb-4">
-          <h2 className="text-base font-semibold text-zinc-900">Project Settings</h2>
+      <div className="bg-white rounded-lg border border-zinc-200 p-6 sm:p-8 space-y-6">
+        <div className="border-b border-zinc-200 pb-4">
+          <h2 className="text-base font-semibold text-black font-heading">Project Settings</h2>
           <p className="text-xs text-zinc-500 mt-0.5">
             Update project name, description, and workspace metadata.
           </p>
@@ -91,7 +91,7 @@ export function ProjectSettingsTab({ project, isOwner }: ProjectSettingsTabProps
               disabled={!isOwner || updateProjectMutation.isPending}
               value={projectName}
               onChange={(e) => setProjectName(e.target.value)}
-              className="w-full rounded-xl border border-zinc-200 bg-white py-2.5 px-3.5 text-sm text-zinc-900 outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 disabled:bg-zinc-50 disabled:text-zinc-500"
+              className="w-full rounded-md border border-zinc-200 bg-white py-2 px-3 text-sm text-black outline-none focus:border-black focus:ring-1 focus:ring-black disabled:bg-zinc-100 disabled:text-zinc-500 transition-colors"
             />
           </div>
 
@@ -106,7 +106,7 @@ export function ProjectSettingsTab({ project, isOwner }: ProjectSettingsTabProps
               value={projectDescription}
               onChange={(e) => setProjectDescription(e.target.value)}
               placeholder="Describe project deliverables..."
-              className="w-full rounded-xl border border-zinc-200 bg-white py-2.5 px-3.5 text-sm text-zinc-900 outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 resize-none disabled:bg-zinc-50 disabled:text-zinc-500"
+              className="w-full rounded-md border border-zinc-200 bg-white py-2 px-3 text-sm text-black outline-none focus:border-black focus:ring-1 focus:ring-black resize-none disabled:bg-zinc-100 disabled:text-zinc-500 transition-colors"
             />
           </div>
 
@@ -122,10 +122,10 @@ export function ProjectSettingsTab({ project, isOwner }: ProjectSettingsTabProps
 
       {/* Danger Zone: Owner Only */}
       {isOwner && (
-        <div className="bg-red-50/50 rounded-2xl border border-red-200/80 p-6 sm:p-8 space-y-4 shadow-2xs">
+        <div className="bg-white rounded-lg border border-zinc-200 p-6 sm:p-8 space-y-4">
           <div>
-            <h3 className="text-base font-semibold text-red-900">Danger Zone</h3>
-            <p className="text-xs text-red-700 mt-0.5">
+            <h3 className="text-base font-semibold text-black font-heading">Danger Zone</h3>
+            <p className="text-xs text-zinc-500 mt-0.5">
               Deleting this project will permanently remove all associated tasks, comments, and member allocations.
             </p>
           </div>

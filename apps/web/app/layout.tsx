@@ -1,14 +1,27 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Plus_Jakarta_Sans, Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { QueryProvider } from '@/components/providers/query-provider';
 import { AuthProvider } from '@/context/auth-context';
 import { RouteGuard } from '@/components/auth/route-guard';
 import { cn } from '@/lib/utils';
 
-const inter = Inter({
+const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
-  variable: '--font-inter',
+  variable: '--font-heading',
+  weight: ['400', '500', '600', '700', '800'],
+  display: 'swap',
+});
+
+const geistSans = Geist({
+  subsets: ['latin'],
+  variable: '--font-sans',
+  display: 'swap',
+});
+
+const geistMono = Geist_Mono({
+  subsets: ['latin'],
+  variable: '--font-mono',
   display: 'swap',
 });
 
@@ -20,8 +33,16 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={cn('h-full antialiased font-sans', inter.variable)}>
-      <body className="min-h-full flex flex-col bg-[#fbfbf5] text-zinc-950 antialiased selection:bg-[#c1fbd4] selection:text-black">
+    <html
+      lang="en"
+      className={cn(
+        'h-full antialiased',
+        plusJakartaSans.variable,
+        geistSans.variable,
+        geistMono.variable,
+      )}
+    >
+      <body className="min-h-full flex flex-col bg-white text-black font-sans antialiased selection:bg-black selection:text-white">
         <QueryProvider>
           <AuthProvider>
             <RouteGuard>{children}</RouteGuard>

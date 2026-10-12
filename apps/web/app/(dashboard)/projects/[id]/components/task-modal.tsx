@@ -103,7 +103,7 @@ function TaskForm({
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="e.g. Implement user authentication strategy"
-          className="w-full rounded-xl border border-zinc-200 bg-white py-2.5 px-3.5 text-sm text-zinc-900 placeholder:text-zinc-400 outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 disabled:opacity-50"
+          className="w-full rounded-md border border-zinc-200 bg-white py-2 px-3 text-sm text-black placeholder:text-zinc-400 outline-none focus:border-black focus:ring-1 focus:ring-black disabled:opacity-50 transition-colors"
         />
       </div>
 
@@ -119,7 +119,7 @@ function TaskForm({
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="Detailed task scope, technical notes, or acceptance criteria..."
-          className="w-full rounded-xl border border-zinc-200 bg-white py-2.5 px-3.5 text-sm text-zinc-900 placeholder:text-zinc-400 outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 resize-none disabled:opacity-50"
+          className="w-full rounded-md border border-zinc-200 bg-white py-2 px-3 text-sm text-black placeholder:text-zinc-400 outline-none focus:border-black focus:ring-1 focus:ring-black resize-none disabled:opacity-50 transition-colors"
         />
       </div>
 
@@ -133,7 +133,7 @@ function TaskForm({
             disabled={isPending}
             value={status}
             onChange={(e) => setStatus(e.target.value as TaskStatus)}
-            className="w-full rounded-xl border border-zinc-200 bg-white py-2 px-3 text-sm text-zinc-800 outline-none focus:border-zinc-900 disabled:opacity-50"
+            className="w-full rounded-md border border-zinc-200 bg-white py-2 px-3 text-sm text-black outline-none focus:border-black disabled:opacity-50 transition-colors"
           >
             <option value="TODO">Todo</option>
             <option value="IN_PROGRESS">In Progress</option>
@@ -149,7 +149,7 @@ function TaskForm({
             disabled={isPending}
             value={priority}
             onChange={(e) => setPriority(e.target.value as TaskPriority)}
-            className="w-full rounded-xl border border-zinc-200 bg-white py-2 px-3 text-sm text-zinc-800 outline-none focus:border-zinc-900 disabled:opacity-50"
+            className="w-full rounded-md border border-zinc-200 bg-white py-2 px-3 text-sm text-black outline-none focus:border-black disabled:opacity-50 transition-colors"
           >
             <option value="LOW">Low</option>
             <option value="MEDIUM">Medium</option>
@@ -168,7 +168,7 @@ function TaskForm({
             disabled={isPending}
             value={assigneeId}
             onChange={(e) => setAssigneeId(e.target.value)}
-            className="w-full rounded-xl border border-zinc-200 bg-white py-2 px-3 text-sm text-zinc-800 outline-none focus:border-zinc-900 disabled:opacity-50"
+            className="w-full rounded-md border border-zinc-200 bg-white py-2 px-3 text-sm text-black outline-none focus:border-black disabled:opacity-50 transition-colors"
           >
             <option value="">Unassigned</option>
             {members.map((member) => (
@@ -188,7 +188,7 @@ function TaskForm({
             disabled={isPending}
             value={dueDate}
             onChange={(e) => setDueDate(e.target.value)}
-            className="w-full rounded-xl border border-zinc-200 bg-white py-2 px-3 text-sm text-zinc-800 outline-none focus:border-zinc-900 disabled:opacity-50"
+            className="w-full rounded-md border border-zinc-200 bg-white py-2 px-3 text-sm text-black outline-none focus:border-black disabled:opacity-50 transition-colors"
           />
         </div>
       </div>

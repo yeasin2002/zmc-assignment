@@ -3,7 +3,7 @@ import { Header } from '@/components/layout/header';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-[#fbfbf5] flex flex-col text-zinc-900 selection:bg-[#c1fbd4] selection:text-black">
+    <div className="min-h-screen bg-white flex flex-col text-black selection:bg-black selection:text-white">
       {/* Top Navigation Bar */}
       <Header />
 

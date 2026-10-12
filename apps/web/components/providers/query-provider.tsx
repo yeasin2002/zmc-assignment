@@ -17,7 +17,7 @@ export function QueryProvider({ children }: { children: React.ReactNode }) {
         closeButton
         theme="light"
         toastOptions={{
-          className: '!rounded-xl !border-zinc-200 !shadow-lg !font-sans',
+          className: '!rounded-md !border-zinc-200 !shadow-lg !font-sans',
         }}
       />
     </QueryClientProvider>

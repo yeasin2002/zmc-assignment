@@ -170,7 +170,7 @@ export function ProjectTasksTab({
   return (
     <div className="space-y-6">
       {/* Query & Filter Toolbar */}
-      <div className="bg-white rounded-2xl border border-zinc-200/80 p-4 space-y-3 shadow-2xs">
+      <div className="bg-white rounded-lg border border-zinc-200 p-4 space-y-3">
         <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-3">
           {/* Keyword Search */}
           <div className="relative md:col-span-2">
@@ -182,7 +182,7 @@ export function ProjectTasksTab({
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
               placeholder="Search tasks by title keyword..."
-              className="w-full rounded-xl border border-zinc-200 bg-white py-2 pl-9 pr-3 text-xs sm:text-sm text-zinc-900 placeholder:text-zinc-400 outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900"
+              className="w-full rounded-md border border-zinc-200 bg-white py-2 pl-9 pr-3 text-xs sm:text-sm text-black placeholder:text-zinc-400 outline-none focus:border-black focus:ring-1 focus:ring-black transition-colors"
             />
           </div>
 
@@ -191,7 +191,7 @@ export function ProjectTasksTab({
             <select
               value={statusParam}
               onChange={(e) => updateFilters({ status: e.target.value || undefined })}
-              className="w-full rounded-xl border border-zinc-200 bg-white py-2 px-3 text-xs sm:text-sm text-zinc-700 outline-none focus:border-zinc-900"
+              className="w-full rounded-md border border-zinc-200 bg-white py-2 px-3 text-xs sm:text-sm text-black outline-none focus:border-black transition-colors"
             >
               <option value="">All Statuses</option>
               <option value="TODO">Todo</option>
@@ -205,7 +205,7 @@ export function ProjectTasksTab({
             <select
               value={priorityParam}
               onChange={(e) => updateFilters({ priority: e.target.value || undefined })}
-              className="w-full rounded-xl border border-zinc-200 bg-white py-2 px-3 text-xs sm:text-sm text-zinc-700 outline-none focus:border-zinc-900"
+              className="w-full rounded-md border border-zinc-200 bg-white py-2 px-3 text-xs sm:text-sm text-black outline-none focus:border-black transition-colors"
             >
               <option value="">All Priorities</option>
               <option value="LOW">Low</option>
@@ -219,7 +219,7 @@ export function ProjectTasksTab({
             <select
               value={assigneeIdParam}
               onChange={(e) => updateFilters({ assigneeId: e.target.value || undefined })}
-              className="w-full rounded-xl border border-zinc-200 bg-white py-2 px-3 text-xs sm:text-sm text-zinc-700 outline-none focus:border-zinc-900"
+              className="w-full rounded-md border border-zinc-200 bg-white py-2 px-3 text-xs sm:text-sm text-black outline-none focus:border-black transition-colors"
             >
               <option value="">All Assignees</option>
               {members.map((m) => (
@@ -238,7 +238,7 @@ export function ProjectTasksTab({
                 const [sb, ord] = e.target.value.split(':');
                 updateFilters({ sortBy: sb, order: ord });
               }}
-              className="w-full rounded-xl border border-zinc-200 bg-white py-2 px-3 text-xs sm:text-sm text-zinc-700 outline-none focus:border-zinc-900"
+              className="w-full rounded-md border border-zinc-200 bg-white py-2 px-3 text-xs sm:text-sm text-black outline-none focus:border-black transition-colors"
             >
               <option value="createdAt:desc">Created (Newest)</option>
               <option value="createdAt:asc">Created (Oldest)</option>
@@ -249,7 +249,7 @@ export function ProjectTasksTab({
         </div>
 
         {/* Toolbar Footer Actions */}
-        <div className="flex items-center justify-between border-t border-zinc-100 pt-3">
+        <div className="flex items-center justify-between border-t border-zinc-200 pt-3">
           <div className="flex items-center gap-2">
             {hasActiveFilters && (
               <Button variant="ghost" size="sm" onClick={resetAllFilters}>
@@ -277,7 +277,7 @@ export function ProjectTasksTab({
 
       {/* Loading Skeletons */}
       {isLoading ? (
-        <div className="bg-white rounded-2xl border border-zinc-200/80 p-6 space-y-3">
+        <div className="bg-white rounded-lg border border-zinc-200 p-6 space-y-3">
           {Array.from({ length: 5 }).map((_, idx) => (
             <div key={idx} className="flex justify-between items-center py-2.5 animate-pulse">
               <Skeleton className="h-4 w-52" />
@@ -313,7 +313,7 @@ export function ProjectTasksTab({
           />
         )
       ) : (
-        <div className="bg-white rounded-2xl border border-zinc-200/80 overflow-hidden shadow-2xs">
+        <div className="bg-white rounded-lg border border-zinc-200 overflow-hidden">
           <TasksTable
             tasks={tasks}
             isOwner={isOwner}
@@ -323,11 +323,11 @@ export function ProjectTasksTab({
           />
 
           {/* Pagination & Count Footer */}
-          <div className="border-t border-zinc-100 px-4 sm:px-6 py-3.5 text-xs text-zinc-500 flex items-center justify-between">
+          <div className="border-t border-zinc-200 px-4 sm:px-6 py-3.5 text-xs text-zinc-500 flex items-center justify-between">
             <span>
-              Showing <span className="font-semibold text-zinc-700">{startItem}</span> to{' '}
-              <span className="font-semibold text-zinc-700">{endItem}</span> of{' '}
-              <span className="font-semibold text-zinc-700">{meta.total}</span> tasks
+              Showing <span className="font-semibold text-black">{startItem}</span> to{' '}
+              <span className="font-semibold text-black">{endItem}</span> of{' '}
+              <span className="font-semibold text-black">{meta.total}</span> tasks
             </span>
 
             <div className="flex items-center gap-1.5">
@@ -336,12 +336,12 @@ export function ProjectTasksTab({
                 disabled={meta.page <= 1}
                 onClick={() => updateFilters({ page: meta.page - 1 })}
                 aria-label="Previous page"
-                className="inline-flex items-center justify-center h-8 w-8 rounded-full border border-zinc-200 text-zinc-600 hover:bg-zinc-50 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                className="inline-flex items-center justify-center h-8 w-8 rounded-md border border-zinc-200 text-black hover:bg-zinc-100 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-colors"
               >
                 <IconChevronLeft className="h-4 w-4" size={16} />
               </button>
 
-              <span className="px-2 font-medium text-zinc-700">
+              <span className="px-2 font-mono font-medium text-black">
                 Page {meta.page} of {Math.max(meta.totalPages, 1)}
               </span>
 
@@ -350,7 +350,7 @@ export function ProjectTasksTab({
                 disabled={meta.page >= meta.totalPages}
                 onClick={() => updateFilters({ page: meta.page + 1 })}
                 aria-label="Next page"
-                className="inline-flex items-center justify-center h-8 w-8 rounded-full border border-zinc-200 text-zinc-600 hover:bg-zinc-50 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                className="inline-flex items-center justify-center h-8 w-8 rounded-md border border-zinc-200 text-black hover:bg-zinc-100 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-colors"
               >
                 <IconChevronRight className="h-4 w-4" size={16} />
               </button>

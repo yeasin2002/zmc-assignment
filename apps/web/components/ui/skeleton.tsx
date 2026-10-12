@@ -6,10 +6,10 @@ export function Skeleton({ className = '' }: { className?: string }) {
 
 export function CardSkeleton() {
   return (
-    <div className="bg-white rounded-2xl border border-zinc-200/80 p-6 space-y-4 animate-pulse">
+    <div className="bg-white rounded-lg border border-zinc-200 p-6 space-y-4 animate-pulse">
       <div className="flex items-center justify-between">
-        <Skeleton className="h-10 w-10 rounded-xl" />
-        <Skeleton className="h-5 w-16 rounded-full" />
+        <Skeleton className="h-10 w-10 rounded-md" />
+        <Skeleton className="h-5 w-16 rounded-md" />
       </div>
       <div className="space-y-2">
         <Skeleton className="h-5 w-3/4" />

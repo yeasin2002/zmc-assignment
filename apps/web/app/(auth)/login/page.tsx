@@ -50,7 +50,7 @@ function LoginForm() {
     <div className="space-y-6">
       {/* Card Header */}
       <div className="space-y-1.5 text-left">
-        <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">Welcome back</h1>
+        <h1 className="text-2xl font-heading font-semibold tracking-tight text-black">Welcome back</h1>
         <p className="text-sm text-zinc-500">
           Enter your credentials to access your workspace and tasks.
         </p>
@@ -80,12 +80,12 @@ function LoginForm() {
           {...register('password')}
         />
 
-        {/* Submit Primary Pill Button */}
+        {/* Submit Primary Button */}
         <div className="pt-2">
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-black py-3 px-6 text-sm font-medium text-white shadow-sm hover:bg-neutral-800 transition-all active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+            className="w-full inline-flex items-center justify-center gap-2 rounded-md bg-black py-2.5 px-5 text-sm font-medium text-white shadow-xs hover:bg-zinc-800 transition-all active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
           >
             {isSubmitting ? (
               <span className="inline-flex items-center gap-2">
@@ -107,7 +107,7 @@ function LoginForm() {
         Don&apos;t have an account yet?{' '}
         <Link
           href="/register"
-          className="font-semibold text-zinc-900 hover:underline transition-colors"
+          className="font-semibold text-black hover:underline transition-colors"
         >
           Create an account
         </Link>
@@ -118,7 +118,7 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div className="h-64 animate-pulse bg-zinc-100/60 rounded-2xl" />}>
+    <Suspense fallback={<div className="h-64 animate-pulse bg-zinc-100/60 rounded-lg" />}>
       <LoginForm />
     </Suspense>
   );

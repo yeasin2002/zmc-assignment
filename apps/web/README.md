@@ -12,7 +12,7 @@ Web client for the **Project & Task Management System**, built with Next.js 16 (
 - **Icons:** [Tabler Icons](https://tabler.io/icons) (`@tabler/icons-react`)
 - **Forms & Validation:** `react-hook-form` + `zod`
 - **Feedback & Notifications:** [Sonner](https://sonner.emilkowal.ski/) toast alerts
-- **Theme & Design:** Strict Light Mode bespoke color palette (`#fbfbf5` background, `#ffffff` cards)
+- **Theme & Design:** Solid Black and Pure White design (`#ffffff` canvas, `#000000` text & accents, crisp `rounded-lg`/`rounded-md` borders, Google Fonts: Plus Jakarta Sans, Geist, Geist Mono)
 
 ---
 
@@ -97,7 +97,7 @@ This ensures every filtered view is **bookmarkable and shareable**.
 
 ## 🎨 UI/UX Design System & Principles
 
-1. **Strict Light Mode:** Curated soft neutral background (`#fbfbf5`), bright white elevated surfaces (`#ffffff`), and slate typography.
+1. **Solid Black & Pure White Design:** High-contrast pure white background (`#ffffff`), solid black typography (`#000000`), crisp `rounded-lg` cards and `rounded-md` controls, with Plus Jakarta Sans and Geist typography.
 2. **Tabler Icons:** Standardized icon set (`@tabler/icons-react`) used exclusively across all components.
 3. **Four Essential UI States:**
    - **Loading State:** Contextual skeleton placeholders during query fetching.

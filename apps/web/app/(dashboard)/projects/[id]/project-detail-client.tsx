@@ -106,7 +106,7 @@ export default function ProjectDetailClient({ id }: { id: string }) {
           <Skeleton className="h-4 w-32" />
         </div>
 
-        <div className="bg-white rounded-2xl border border-zinc-200/80 p-6 sm:p-8 space-y-6">
+        <div className="bg-white rounded-lg border border-zinc-200 p-6 sm:p-8 space-y-6">
           <div className="space-y-3">
             <div className="flex items-center gap-3">
               <Skeleton className="h-8 w-48" />
@@ -114,14 +114,14 @@ export default function ProjectDetailClient({ id }: { id: string }) {
             </div>
             <Skeleton className="h-4 w-full max-w-xl" />
           </div>
-          <div className="flex gap-6 border-b border-zinc-100 pb-3">
+          <div className="flex gap-6 border-b border-zinc-200 pb-3">
             <Skeleton className="h-5 w-20" />
             <Skeleton className="h-5 w-20" />
             <Skeleton className="h-5 w-20" />
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl border border-zinc-200/80 p-6 space-y-4">
+        <div className="bg-white rounded-lg border border-zinc-200 p-6 space-y-4">
           <Skeleton className="h-10 w-full" />
           <Skeleton className="h-16 w-full" />
           <Skeleton className="h-16 w-full" />
@@ -136,21 +136,21 @@ export default function ProjectDetailClient({ id }: { id: string }) {
       <div className="flex items-center gap-2 text-xs text-zinc-500">
         <Link
           href="/projects"
-          className="inline-flex items-center gap-1 hover:text-zinc-900 transition-colors"
+          className="inline-flex items-center gap-1 hover:text-black transition-colors"
         >
           <IconArrowLeft className="h-3.5 w-3.5" size={14} />
           <span>Projects</span>
         </Link>
         <span>/</span>
-        <span className="text-zinc-900 font-medium truncate max-w-xs">{project.name}</span>
+        <span className="text-black font-medium truncate max-w-xs">{project.name}</span>
       </div>
 
       {/* Project Header Card */}
-      <div className="bg-white rounded-2xl border border-zinc-200/80 p-6 sm:p-8 space-y-6 shadow-2xs">
+      <div className="bg-white rounded-lg border border-zinc-200 p-6 sm:p-8 space-y-6">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <div className="space-y-2">
             <div className="flex items-center gap-2.5 flex-wrap">
-              <h1 className="text-2xl sm:text-3xl font-normal tracking-tight text-zinc-950">
+              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-black font-heading">
                 {project.name}
               </h1>
               <RoleBadge role={project.currentUserRole} />
@@ -188,18 +188,18 @@ export default function ProjectDetailClient({ id }: { id: string }) {
         </div>
 
         {/* Navigation Tabs */}
-        <div className="flex items-center gap-6 border-b border-zinc-100 text-sm">
+        <div className="flex items-center gap-6 border-b border-zinc-200 text-sm">
           <button
             type="button"
             onClick={() => handleTabChange('tasks')}
-            className={`pb-3 font-semibold transition-colors flex items-center gap-2 cursor-pointer ${
+            className={`pb-3 font-semibold font-heading transition-colors flex items-center gap-2 cursor-pointer ${
               activeTab === 'tasks'
-                ? 'border-b-2 border-black text-zinc-900'
-                : 'border-b-2 border-transparent text-zinc-500 hover:text-zinc-800'
+                ? 'border-b-2 border-black text-black'
+                : 'border-b-2 border-transparent text-zinc-500 hover:text-black'
             }`}
           >
             <span>Tasks</span>
-            <span className="px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-700 text-xs font-medium">
+            <span className="px-2 py-0.5 rounded-md bg-zinc-100 text-black text-xs font-mono font-medium">
               {project._count?.tasks ?? 0}
             </span>
           </button>
@@ -207,14 +207,14 @@ export default function ProjectDetailClient({ id }: { id: string }) {
           <button
             type="button"
             onClick={() => handleTabChange('members')}
-            className={`pb-3 font-medium transition-colors flex items-center gap-2 cursor-pointer ${
+            className={`pb-3 font-medium font-heading transition-colors flex items-center gap-2 cursor-pointer ${
               activeTab === 'members'
-                ? 'border-b-2 border-black font-semibold text-zinc-900'
-                : 'border-b-2 border-transparent text-zinc-500 hover:text-zinc-800'
+                ? 'border-b-2 border-black font-semibold text-black'
+                : 'border-b-2 border-transparent text-zinc-500 hover:text-black'
             }`}
           >
             <span>Members</span>
-            <span className="px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-700 text-xs font-medium">
+            <span className="px-2 py-0.5 rounded-md bg-zinc-100 text-black text-xs font-mono font-medium">
               {members.length}
             </span>
           </button>
@@ -222,15 +222,15 @@ export default function ProjectDetailClient({ id }: { id: string }) {
           <button
             type="button"
             onClick={() => handleTabChange('settings')}
-            className={`pb-3 font-medium transition-colors flex items-center gap-2 cursor-pointer ${
+            className={`pb-3 font-medium font-heading transition-colors flex items-center gap-2 cursor-pointer ${
               activeTab === 'settings'
-                ? 'border-b-2 border-black font-semibold text-zinc-900'
-                : 'border-b-2 border-transparent text-zinc-500 hover:text-zinc-800'
+                ? 'border-b-2 border-black font-semibold text-black'
+                : 'border-b-2 border-transparent text-zinc-500 hover:text-black'
             }`}
           >
             <span>Settings</span>
             {!isOwner && (
-              <span className="text-[10px] uppercase font-semibold text-zinc-400 bg-zinc-100 px-1.5 py-0.5 rounded">
+              <span className="text-[10px] uppercase font-semibold text-zinc-500 bg-zinc-100 px-1.5 py-0.5 rounded-md">
                 Read-only
               </span>
             )}

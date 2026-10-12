@@ -38,12 +38,12 @@ export const AuthInput = forwardRef<HTMLInputElement, AuthInputProps>(
             ref={ref}
             id={inputId}
             type={computedType}
-            className={`w-full rounded-xl border bg-white py-3 text-sm text-zinc-900 placeholder:text-zinc-400 transition-all outline-none focus:ring-2 disabled:cursor-not-allowed disabled:opacity-60 ${
+            className={`w-full rounded-md border bg-white py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400 transition-all outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-60 ${
               Icon ? 'pl-10' : 'pl-3.5'
             } ${isPassword ? 'pr-11' : 'pr-3.5'} ${
               error
-                ? 'border-red-400 bg-red-50/20 focus:border-red-500 focus:ring-red-500/10'
-                : 'border-zinc-200 hover:border-zinc-300 focus:border-zinc-900 focus:ring-zinc-900/10'
+                ? 'border-red-500 bg-red-50/20 focus:border-red-600 focus:ring-red-600'
+                : 'border-zinc-200 hover:border-zinc-300 focus:border-black focus:ring-black'
             } ${className}`}
             {...props}
           />

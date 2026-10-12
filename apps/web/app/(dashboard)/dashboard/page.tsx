@@ -64,7 +64,7 @@ export default function DashboardPage() {
       {/* Dashboard Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="space-y-1">
-          <h1 className="text-2xl sm:text-3xl font-normal tracking-tight text-zinc-950">
+          <h1 className="text-2xl sm:text-3xl font-heading font-semibold tracking-tight text-black">
             Workspace Dashboard
           </h1>
           <p className="text-sm text-zinc-500">
@@ -76,13 +76,13 @@ export default function DashboardPage() {
         <div className="flex items-center gap-2.5">
           <Link
             href="/projects"
-            className="inline-flex items-center gap-1.5 rounded-full border border-zinc-200/90 bg-white py-2 px-4 text-xs sm:text-sm font-medium text-zinc-800 shadow-2xs hover:bg-zinc-50 hover:border-zinc-300 transition-colors"
+            className="inline-flex items-center gap-1.5 rounded-md border border-zinc-200 bg-white py-2 px-3.5 text-xs sm:text-sm font-medium text-black shadow-2xs hover:bg-zinc-50 hover:border-zinc-300 transition-colors"
           >
             <span>View All Projects</span>
           </Link>
           <Link
             href="/projects"
-            className="inline-flex items-center gap-1.5 rounded-full bg-black py-2 px-5 text-xs sm:text-sm font-medium text-white shadow-xs hover:bg-neutral-800 transition-colors"
+            className="inline-flex items-center gap-1.5 rounded-md bg-black py-2 px-4 text-xs sm:text-sm font-medium text-white shadow-xs hover:bg-zinc-800 transition-colors"
           >
             <IconPlus className="h-4 w-4" size={16} />
             <span>New Project</span>

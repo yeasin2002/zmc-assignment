@@ -59,7 +59,7 @@ function RegisterForm() {
     <div className="space-y-6">
       {/* Card Header */}
       <div className="space-y-1.5 text-left">
-        <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">Create your account</h1>
+        <h1 className="text-2xl font-heading font-semibold tracking-tight text-black">Create your account</h1>
         <p className="text-sm text-zinc-500">
           Start collaborating on projects, assigning tasks, and tracking progress.
         </p>
@@ -111,12 +111,12 @@ function RegisterForm() {
           {...register('confirmPassword')}
         />
 
-        {/* Submit Primary Pill Button */}
+        {/* Submit Primary Button */}
         <div className="pt-2">
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-black py-3 px-6 text-sm font-medium text-white shadow-sm hover:bg-neutral-800 transition-all active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+            className="w-full inline-flex items-center justify-center gap-2 rounded-md bg-black py-2.5 px-5 text-sm font-medium text-white shadow-xs hover:bg-zinc-800 transition-all active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
           >
             {isSubmitting ? (
               <span className="inline-flex items-center gap-2">
@@ -138,7 +138,7 @@ function RegisterForm() {
         Already have an account?{' '}
         <Link
           href="/login"
-          className="font-semibold text-zinc-900 hover:underline transition-colors"
+          className="font-semibold text-black hover:underline transition-colors"
         >
           Sign in
         </Link>
@@ -149,7 +149,7 @@ function RegisterForm() {
 
 export default function RegisterPage() {
   return (
-    <Suspense fallback={<div className="h-64 animate-pulse bg-zinc-100/60 rounded-2xl" />}>
+    <Suspense fallback={<div className="h-64 animate-pulse bg-zinc-100/60 rounded-lg" />}>
       <RegisterForm />
     </Suspense>
   );

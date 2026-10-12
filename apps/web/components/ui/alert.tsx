@@ -34,12 +34,12 @@ export function Alert({ type = 'error', title, message, onRetry, onClose }: Aler
   return (
     <div
       role="alert"
-      className={`rounded-xl border p-4 flex items-start justify-between gap-3 ${styles.container}`}
+      className={`rounded-md border p-4 flex items-start justify-between gap-3 ${styles.container}`}
     >
       <div className="flex items-start gap-3">
         <div className="pt-0.5">{styles.icon}</div>
         <div className="space-y-0.5">
-          {title && <h4 className="text-xs sm:text-sm font-semibold">{title}</h4>}
+          {title && <h4 className="text-xs sm:text-sm font-heading font-semibold">{title}</h4>}
           <p className="text-xs sm:text-sm text-zinc-700 leading-relaxed">{message}</p>
         </div>
       </div>

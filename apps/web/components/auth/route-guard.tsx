@@ -46,9 +46,9 @@ function RouteGuardWatcher({ children }: { children: React.ReactNode }) {
 
   if (isLoading && isProtected && !isPreview) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#fbfbf5]">
+      <div className="min-h-screen flex items-center justify-center bg-white">
         <div className="flex flex-col items-center gap-3">
-          <div className="h-8 w-8 rounded-full border-2 border-zinc-900 border-t-transparent animate-spin" />
+          <div className="h-8 w-8 rounded-full border-2 border-black border-t-transparent animate-spin" />
           <p className="text-xs text-zinc-500 font-medium">Verifying session...</p>
         </div>
       </div>

@@ -36,16 +36,16 @@ export function PriorityQueue({
       : projects[0]?.id;
 
   return (
-    <div className="bg-white rounded-2xl border border-zinc-200/80 p-6 space-y-5 shadow-2xs">
-      <div className="flex items-center justify-between border-b border-zinc-100 pb-4">
+    <div className="bg-white rounded-lg border border-zinc-200 p-6 space-y-5">
+      <div className="flex items-center justify-between border-b border-zinc-200 pb-4">
         <div>
-          <h2 className="text-base font-medium text-zinc-900">Priority Queue</h2>
+          <h2 className="text-base font-semibold text-black font-heading">Priority Queue</h2>
           <p className="text-xs text-zinc-500 mt-0.5">
             Tasks flagged with high priority awaiting resolution
           </p>
         </div>
         {urgentCount > 0 && (
-          <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-red-50 text-red-700 border border-red-200/60">
+          <span className="text-[11px] font-mono font-semibold px-2 py-0.5 rounded-md bg-black text-white border border-black">
             {urgentCount} Urgent
           </span>
         )}
@@ -60,10 +60,10 @@ export function PriorityQueue({
               key={p.id}
               type="button"
               onClick={() => onSelectProject(p.id)}
-              className={`px-3 py-1 rounded-full text-xs font-medium transition-colors shrink-0 cursor-pointer ${
+              className={`px-2.5 py-1 rounded-md text-xs font-medium transition-colors shrink-0 cursor-pointer ${
                 activeProjectId === p.id
                   ? 'bg-black text-white'
-                  : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200/70 hover:text-zinc-900'
+                  : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 hover:text-black'
               }`}
             >
               {p.name}
@@ -77,7 +77,7 @@ export function PriorityQueue({
           {Array.from({ length: 3 }).map((_, idx) => (
             <div
               key={idx}
-              className="rounded-xl border border-zinc-200/70 p-3.5 space-y-2 animate-pulse"
+              className="rounded-md border border-zinc-200 p-3.5 space-y-2 animate-pulse"
             >
               <Skeleton className="h-4 w-40" />
               <Skeleton className="h-3 w-24" />
@@ -99,7 +99,7 @@ export function PriorityQueue({
             activeProjectId && (
               <Link
                 href={`/projects/${activeProjectId}`}
-                className="inline-flex items-center gap-1.5 rounded-full border border-zinc-200/80 bg-white py-1.5 px-3.5 text-xs font-medium text-zinc-800 shadow-2xs hover:bg-zinc-50 transition-colors"
+                className="inline-flex items-center gap-1.5 rounded-md border border-zinc-200 bg-white py-1.5 px-3.5 text-xs font-medium text-black hover:bg-zinc-50 transition-colors"
               >
                 <span>View all space tasks</span>
                 <IconArrowRight className="h-3.5 w-3.5" size={12} />
@@ -120,18 +120,18 @@ export function PriorityQueue({
             return (
               <div
                 key={task.id}
-                className="rounded-xl border border-zinc-200/70 p-3.5 flex items-center justify-between gap-3 hover:border-zinc-300 transition-colors"
+                className="rounded-md border border-zinc-200 p-3.5 flex items-center justify-between gap-3 hover:border-black transition-colors"
               >
                 <div className="space-y-1 min-w-0">
                   <Link
                     href={`/projects/${task.projectId}`}
-                    className="text-xs sm:text-sm font-medium text-zinc-900 truncate hover:underline block"
+                    className="text-xs sm:text-sm font-medium text-black truncate hover:underline block"
                   >
                     {task.title}
                   </Link>
                   <div className="flex items-center gap-2 text-xs text-zinc-400">
                     {activeProject && (
-                      <span className="text-zinc-600 font-medium">{activeProject.name}</span>
+                      <span className="text-zinc-700 font-medium">{activeProject.name}</span>
                     )}
                     {formattedDate && (
                       <>

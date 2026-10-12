@@ -63,7 +63,7 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g. Mobile App Redesign"
-              className="w-full rounded-xl border border-zinc-200 bg-white py-2.5 px-3.5 text-sm text-zinc-900 placeholder:text-zinc-400 outline-none focus:border-zinc-900 focus:ring-2 focus:ring-zinc-900/10 disabled:opacity-50"
+              className="w-full rounded-md border border-zinc-200 bg-white py-2 px-3 text-sm text-black placeholder:text-zinc-400 outline-none focus:border-black focus:ring-1 focus:ring-black disabled:opacity-50 transition-colors"
             />
           </div>
 
@@ -78,7 +78,7 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Describe the goals, deliverables, and scope of this project..."
-              className="w-full rounded-xl border border-zinc-200 bg-white py-2.5 px-3.5 text-sm text-zinc-900 placeholder:text-zinc-400 outline-none focus:border-zinc-900 focus:ring-2 focus:ring-zinc-900/10 resize-none disabled:opacity-50"
+              className="w-full rounded-md border border-zinc-200 bg-white py-2 px-3 text-sm text-black placeholder:text-zinc-400 outline-none focus:border-black focus:ring-1 focus:ring-black resize-none disabled:opacity-50 transition-colors"
             />
           </div>
 
