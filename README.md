@@ -61,7 +61,7 @@ zmc-assignment/
 | **Backend Framework** | [NestJS](https://nestjs.com/) | Enterprise modular architecture, dependency injection, declarative validation pipes, guards, and interceptors. |
 | **Frontend Framework** | [Next.js 16](https://nextjs.org/) | Modern React 19 App Router, Turbopack high-speed bundler, Partial Prerendering, and static optimization. |
 | **Language** | [TypeScript](https://www.typescriptlang.org/) | Strict type safety enforced across backend DTOs, Prisma models, API contracts, and frontend hooks. |
-| **Database** | [PostgreSQL 16](https://www.postgresql.org/) | Robust relational ACID database with indexing and cascading referential integrity. |
+| **Database** | [Neon](https://neon.tech/) / [PostgreSQL 16](https://www.postgresql.org/) | Serverless cloud PostgreSQL with connection pooling & autoscaling (with local Docker Compose support). |
 | **ORM** | [Prisma ORM](https://www.prisma.io/) | Declarative schema modeling, automatic migration generation, type-safe database queries. |
 | **API Client & Cache** | [TanStack Query v5](https://tanstack.com/query) + [Axios](https://axios-http.com/) | 2-layer API pattern (Query List + Custom Hooks), automatic cache invalidation, and 401 interception. |
 | **Styling & Components**| [Tailwind CSS v4](https://tailwindcss.com/) + [Base UI](https://base-ui.com/) | Strict light-mode aesthetic (`#fbfbf5` canvas, `#ffffff` cards), clean typography, accessible dialogs. |
@@ -117,12 +117,12 @@ User (users)
 
 ---
 
-## 🚀 Local Development Setup
+## 🚀 Local Development & Database Setup
 
 ### 1. Prerequisites
 - **Node.js:** `>= 20.x`
 - **pnpm:** `>= 9.x` (or `>= 10.x`)
-- **Podman** or **Docker Compose**
+- **Database:** Hosted on **Neon Serverless PostgreSQL** (or locally via Podman / Docker Compose)
 
 ### 2. Clone Repository & Install Dependencies
 ```bash
@@ -131,23 +131,26 @@ cd zmc-assignment
 pnpm install
 ```
 
-### 3. Start Database Container
+### 3. Database Options
+
+The project is connected to **Neon Serverless PostgreSQL** in the cloud, removing the need to run local database software. However, `docker-compose.yml` is retained if offline container development is preferred.
+
 ```bash
-# Using Podman Compose
-podman compose up -d
+# OPTION A (Default): Neon Cloud PostgreSQL
+# Pre-configured in .env - No local database container required!
 
-# Or using Docker Compose
-docker compose up -d
-
-# Or via npm script helper
-pnpm run db:up
+# OPTION B (Local Docker fallback, if desired):
+docker compose up -d  # or: podman compose up -d
 ```
 
 ### 4. Configure Environment Variables
 
 **Backend (`apps/server/.env`):**
 ```env
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/zmc_assignment?schema=public"
+# Neon Serverless PostgreSQL connection strings
+DATABASE_URL="postgresql://default:ZHqV0fuj4vIw@ep-dry-mode-a1f3a48u-pooler.ap-southeast-1.aws.neon.tech/verceldb?sslmode=require"
+DIRECT_URL="postgresql://default:ZHqV0fuj4vIw@ep-dry-mode-a1f3a48u.ap-southeast-1.aws.neon.tech/verceldb?sslmode=require"
+
 JWT_SECRET="super-secret-jwt-key-replace-in-production"
 JWT_EXPIRES_IN="7d"
 PORT=3001
@@ -161,11 +164,11 @@ NEXT_PUBLIC_API_URL="http://localhost:3001/api"
 ### 5. Run Migrations & Seed Database
 ```bash
 # Apply Prisma migrations and generate client
-pnpm run db:migrate
-pnpm run db:generate
+pnpm --filter server run prisma:generate
+pnpm --filter server exec prisma migrate deploy
 
 # Populate realistic seed test accounts & tasks
-pnpm run db:seed
+pnpm run seed
 ```
 
 ### 6. Run the Applications
