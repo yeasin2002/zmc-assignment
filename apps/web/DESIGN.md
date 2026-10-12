@@ -149,29 +149,13 @@ Key distinctions:
 
 ## 2. Typography & Font Architecture
 
-The typographic system utilizes Google Fonts integrated directly through Next.js font optimization (`next/font/google`) and exposed as CSS variables across the entire application:
+The typographic system utilizes self-hosted Google Fonts bundled directly via `@fontsource-variable/plus-jakarta-sans` and `geist/font` to ensure 100% build reliability on containerized platforms (Railway, Docker, CI) without external CDN fetch vulnerabilities:
 
 ```tsx
 // apps/web/app/layout.tsx
-import { Plus_Jakarta_Sans, Geist, Geist_Mono } from 'next/font/google';
-
-const fontHeading = Plus_Jakarta_Sans({
-  subsets: ['latin'],
-  variable: '--font-heading',
-  display: 'swap',
-});
-
-const fontSans = Geist({
-  subsets: ['latin'],
-  variable: '--font-sans',
-  display: 'swap',
-});
-
-const fontMono = Geist_Mono({
-  subsets: ['latin'],
-  variable: '--font-mono',
-  display: 'swap',
-});
+import '@fontsource-variable/plus-jakarta-sans';
+import { GeistSans } from 'geist/font/sans';
+import { GeistMono } from 'geist/font/mono';
 ```
 
 ### CSS Variables Definition (`apps/web/app/globals.css`)
