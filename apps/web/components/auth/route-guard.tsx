@@ -35,26 +35,6 @@ function RouteGuardWatcher({ children }: { children: React.ReactNode }) {
     }
   }, [isAuthenticated, isLoading, pathname, router]);
 
-  const isProtected = PROTECTED_PREFIXES.some(
-    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
-  );
-
-  const isPreview =
-    typeof window !== 'undefined' &&
-    (window.location.search.includes('preview=true') ||
-      localStorage.getItem('zmc_preview_mode') === 'true');
-
-  if (isLoading && isProtected && !isPreview) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="flex flex-col items-center gap-3">
-          <div className="h-8 w-8 rounded-full border-2 border-black border-t-transparent animate-spin" />
-          <p className="text-xs text-zinc-500 font-medium">Verifying session...</p>
-        </div>
-      </div>
-    );
-  }
-
   return <>{children}</>;
 }
 
