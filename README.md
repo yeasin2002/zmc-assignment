@@ -7,6 +7,7 @@ A production-ready full-stack **Project & Task Management System** developed wit
 ## 📋 Table of Contents
 
 - [Overview & Objectives](#-overview--objectives)
+- [Quick Test Credentials](#-quick-test-credentials)
 - [Monorepo Architecture](#-monorepo-architecture)
 - [Technology Stack & Rationale](#-technology-stack--rationale)
 - [Security & Access Control (RBAC)](#-security--access-control-rbac)
@@ -28,6 +29,20 @@ This system provides a collaborative task management workspace where users can:
 - Manage tasks with real-time database-level search, filtering, sorting, and pagination.
 - View real-time aggregated productivity metrics on a dedicated dashboard.
 - Experience a resilient frontend interface handling loading skeletons, error boundaries, empty states, and responsive viewports.
+
+---
+
+## 🔑 Quick Test Credentials
+
+The database is pre-seeded on **Neon Serverless PostgreSQL** with 3 test accounts. All accounts share the same password:
+
+> **Universal Password:** `Password123!`
+
+| Account | Email Address | Password | Role & Scope |
+| :--- | :--- | :--- | :--- |
+| **Owner User** | `owner@example.com` | `Password123!` | • **Owner** of **Project Alpha** (Full admin access)<br>• Can create/edit/delete tasks and manage members |
+| **Member User 1** | `member1@example.com` | `Password123!` | • **Member** in **Project Alpha** (Collaborator, assigned Task 2)<br>• **Owner** of **Project Beta** |
+| **Member User 2** | `member2@example.com` | `Password123!` | • **Member** in **Project Alpha** (Assigned Task 3)<br>• **Member** in **Project Beta** |
 
 ---
 
@@ -185,17 +200,26 @@ pnpm run dev
 
 ## 👥 Seed Test Accounts & Scenarios
 
-The automated seed script populates the database with realistic collaboration scenarios:
+The database on **Neon Serverless PostgreSQL** is pre-populated with realistic collaboration and permission scenarios:
 
-| User Name | Email Address | Password | Workspace Role & Scope |
-| :--- | :--- | :--- | :--- |
-| **Owner User** | `owner@example.com` | `Password123!` | • **Owner** of **Project Alpha**<br>• Full administrative capabilities |
-| **Member User 1** | `member1@example.com` | `Password123!` | • **Member** in **Project Alpha** (Assigned Task 2)<br>• **Owner** of **Project Beta** |
-| **Member User 2** | `member2@example.com` | `Password123!` | • **Member** in **Project Alpha** (Assigned Task 3)<br>• **Member** in **Project Beta** |
+| User Name | Email Address | Password | Database User ID (UUID) | Workspace Role & Scope |
+| :--- | :--- | :--- | :--- | :--- |
+| **Owner User** | `owner@example.com` | `Password123!` | `1ce66eb3-1617-439d-a073-c3280722265b` | • **Owner** of **Project Alpha**<br>• Full administrative capabilities |
+| **Member User 1** | `member1@example.com` | `Password123!` | `20f5bbff-6019-4f1b-b9c1-2e58ab980a6c` | • **Member** in **Project Alpha** (Assigned Task 2)<br>• **Owner** of **Project Beta** |
+| **Member User 2** | `member2@example.com` | `Password123!` | `94d6a1b2-bede-432c-9bc8-2ca7d0c07f15` | • **Member** in **Project Alpha** (Assigned Task 3)<br>• **Member** in **Project Beta** |
 
-### Workspace Scenarios
-- **Project Alpha:** Owned by `owner@example.com`. Members include `member1@example.com` and `member2@example.com`. Contains 3 tasks in `Todo`, `In Progress`, and `Done` states.
-- **Project Beta:** Owned by `member1@example.com`. Member includes `member2@example.com`. Used to verify project isolation (e.g., logging in as `owner@example.com` and attempting to access Project Beta yields a `403 Forbidden`).
+### Workspace Scenarios & Test IDs
+- **Project Alpha (`c969c08f-2a03-44da-895d-744dbb1be6ad`):**
+  - **Owner:** `owner@example.com`
+  - **Members:** `member1@example.com`, `member2@example.com`
+  - **Tasks:**
+    - Task 1: *"Setup Architecture & Infrastructure"* — `TODO`, Priority `LOW`, Unassigned
+    - Task 2: *"Implement JWT Authentication & Guards"* — `IN_PROGRESS`, Priority `HIGH`, Assigned to `member1@example.com`
+    - Task 3: *"Build Filterable Task Queries"* — `DONE`, Priority `MEDIUM`, Assigned to `member2@example.com`
+- **Project Beta (`985693ec-b04d-4a58-b74f-2285319d068d`):**
+  - **Owner:** `member1@example.com`
+  - **Member:** `member2@example.com`
+  - **Isolation Verification:** Logging in as `owner@example.com` and attempting to view/modify Project Beta returns `403 Forbidden` / `404 Not Found`.
 
 ---
 
