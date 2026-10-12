@@ -279,11 +279,3 @@ pnpm run build
 ```
 
 ---
-
-## 💡 Design Decisions & Trade-offs
-
-1. **Lightweight & Focused Aesthetic:** Strict Light Mode palette (`#fbfbf5` canvas, `#ffffff` cards) with Tabler icons and Sonner notifications.
-2. **Two-Layer API Architecture:** Separation between Layer 1 Axios query calls (`api/query-list/`) and Layer 2 React Query hooks (`api/api-hooks/`) ensures maintainability and modularity.
-3. **URL-Synchronized Filter State:** Search keywords, filters, sorting, and pagination parameters are synced with URL search params, allowing views to be bookmarked and shared.
-4. **Thin Controllers & Thick Services:** Controllers only handle HTTP transport, routing, and DTO extraction. All business rules (e.g. member validation before task assignment) reside exclusively in service methods.
-5. **Component Sizing & Reusability:** Complex screens are decomposed into focused subcomponents (tasks table, task modal, member list, settings, delete dialog) staying well under 350 lines per file.
