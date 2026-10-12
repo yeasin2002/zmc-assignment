@@ -8,6 +8,8 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types",
     "seed": "pnpm --filter server run seed",
+    "start:server": "pnpm --filter server run start:prod",
+    "start:web": "pnpm --filter web run start",
     "db:up": "podman compose up -d",
     "db:down": "podman compose down"
   },
