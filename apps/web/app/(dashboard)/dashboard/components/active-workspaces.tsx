@@ -1,15 +1,9 @@
-import React from 'react';
-import Link from 'next/link';
-import {
-  IconArrowRight,
-  IconFolders,
-  IconPlus,
-  IconUsers,
-} from '@tabler/icons-react';
 import type { ProjectListItem } from '@/api/query-list/projects.query';
 import { RoleBadge } from '@/components/ui/badge';
 import { EmptyState } from '@/components/ui/empty-state';
 import { Skeleton } from '@/components/ui/skeleton';
+import { IconArrowRight, IconFolders, IconPlus, IconUsers } from '@tabler/icons-react';
+import Link from 'next/link';
 
 interface ActiveWorkspacesProps {
   projects: ProjectListItem[];

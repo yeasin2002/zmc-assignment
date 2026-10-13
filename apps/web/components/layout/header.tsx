@@ -52,7 +52,7 @@ function HeaderContent() {
               <span className="font-heading font-bold text-sm tracking-tight text-black">
                 ZMC Tasks
               </span>
-              <span className="text-[10px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded bg-zinc-100 text-black border border-zinc-200">
+              <span className="text-xs font-mono uppercase tracking-wider px-1.5 py-0.5 rounded bg-zinc-100 text-black border border-zinc-200">
                 Workspace
               </span>
             </div>
@@ -88,13 +88,13 @@ function HeaderContent() {
         {/* Right: User Profile, Actions & Mobile Toggle */}
         <div className="flex items-center gap-2 sm:gap-3">
           <div className="flex items-center gap-2 sm:gap-2.5 px-2.5 sm:px-3 py-1.5 rounded-md bg-white border border-zinc-200 text-xs text-zinc-800">
-            <div className="h-5 w-5 rounded-sm bg-black text-white text-[10px] font-mono font-bold flex items-center justify-center">
+            <div className="h-5 w-5 rounded-sm bg-black text-white text-xs font-mono font-bold flex items-center justify-center">
               {initials}
             </div>
-            <span className="font-medium text-black max-w-[100px] sm:max-w-[130px] truncate">
+            <span className="font-medium text-black max-w-25 sm:max-w-32.5 truncate">
               {user?.name || 'Workspace User'}
             </span>
-            <span className="hidden sm:inline-block text-[10px] uppercase font-mono tracking-wider text-black bg-zinc-100 border border-zinc-200 px-1.5 py-0.5 rounded">
+            <span className="hidden sm:inline-block text-xs uppercase font-mono tracking-wider text-black bg-zinc-100 border border-zinc-200 px-1.5 py-0.5 rounded">
               Active
             </span>
           </div>
@@ -173,7 +173,7 @@ export function Header() {
   return (
     <Suspense
       fallback={
-        <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-zinc-200/80 px-4 sm:px-8 py-3.5 h-[61px]" />
+        <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-zinc-200/80 px-4 sm:px-8 py-3.5 h-15.25" />
       }
     >
       <HeaderContent />

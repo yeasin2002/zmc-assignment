@@ -23,7 +23,7 @@ export function TasksTable({
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-left text-xs sm:text-sm">
-        <thead className="border-b border-zinc-200 bg-zinc-50 text-black uppercase tracking-wider text-[11px] font-semibold font-mono">
+        <thead className="border-b border-zinc-200 bg-zinc-50 text-black uppercase tracking-wider text-xs font-semibold font-mono">
           <tr>
             <th className="py-3 px-4 sm:px-6">Task Title</th>
             <th className="py-3 px-4">Status</th>
@@ -68,7 +68,7 @@ export function TasksTable({
               <td className="py-3.5 px-4 whitespace-nowrap text-xs">
                 {task.assignee ? (
                   <div className="flex items-center gap-1.5">
-                    <div className="h-5 w-5 rounded-md bg-black text-white text-[10px] font-mono font-bold flex items-center justify-center">
+                    <div className="h-5 w-5 rounded-md bg-black text-white text-xs font-mono font-bold flex items-center justify-center">
                       {task.assignee.name.charAt(0).toUpperCase()}
                     </div>
                     <span className="text-black font-medium">

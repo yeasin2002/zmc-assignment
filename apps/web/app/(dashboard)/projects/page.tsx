@@ -128,14 +128,14 @@ export default function ProjectsPage() {
           {/* Quick Create Prompt Card */}
           <div
             onClick={() => setIsCreateModalOpen(true)}
-            className="rounded-lg border-2 border-dashed border-zinc-200 p-6 flex flex-col items-center justify-center text-center space-y-3 bg-zinc-50/50 hover:bg-zinc-100/80 hover:border-black transition-colors cursor-pointer min-h-[240px]"
+            className="rounded-lg border-2 border-dashed border-zinc-200 p-6 flex flex-col items-center justify-center text-center space-y-3 bg-zinc-50/50 hover:bg-zinc-100/80 hover:border-black transition-colors cursor-pointer min-h-60"
           >
             <div className="h-9 w-9 rounded-md bg-white border border-zinc-200 flex items-center justify-center text-black">
               <IconPlus className="h-4 w-4" size={16} />
             </div>
             <div>
               <h4 className="text-sm font-semibold text-black font-heading">Create Another Project</h4>
-              <p className="text-xs text-zinc-500 max-w-[200px] mt-1">
+              <p className="text-xs text-zinc-500 max-w-50 mt-1">
                 Start a new workspace to organize tasks and invite team members.
               </p>
             </div>

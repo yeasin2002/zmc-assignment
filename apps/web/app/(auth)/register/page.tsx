@@ -116,7 +116,7 @@ function RegisterForm() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full inline-flex items-center justify-center gap-2 rounded-md bg-black py-2.5 px-5 text-sm font-medium text-white shadow-xs hover:bg-zinc-800 transition-all active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+            className="w-full inline-flex items-center justify-center gap-2 rounded-md bg-black py-2.5 px-5 text-sm font-medium text-white shadow-xs hover:bg-zinc-800 transition-all active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
           >
             {isSubmitting ? (
               <span className="inline-flex items-center gap-2">

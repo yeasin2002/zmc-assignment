@@ -230,7 +230,7 @@ export default function ProjectDetailClient({ id }: { id: string }) {
           >
             <span>Settings</span>
             {!isOwner && (
-              <span className="text-[10px] uppercase font-semibold text-zinc-500 bg-zinc-100 px-1.5 py-0.5 rounded-md">
+              <span className="text-xs uppercase font-semibold text-zinc-500 bg-zinc-100 px-1.5 py-0.5 rounded-md">
                 Read-only
               </span>
             )}

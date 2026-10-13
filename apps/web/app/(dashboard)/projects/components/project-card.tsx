@@ -60,7 +60,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
         {/* Footer: Owner & Open Link */}
         <div className="flex items-center justify-between text-xs text-zinc-500 pt-1">
-          <span className="text-zinc-400 truncate max-w-[150px]">
+          <span className="text-zinc-400 truncate max-w-37.5">
             Owner: <span className="text-black font-medium">{project.owner?.name ?? 'Unknown'}</span>
           </span>
 

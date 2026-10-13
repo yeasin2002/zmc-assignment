@@ -22,7 +22,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
               <span className="font-heading font-bold text-sm tracking-tight text-black block leading-tight">
                 ZMC Tasks
               </span>
-              <span className="text-[10px] font-mono font-medium text-zinc-500 block tracking-wide uppercase">
+              <span className="text-xs font-mono font-medium text-zinc-500 block tracking-wide uppercase">
                 Project System
               </span>
             </div>
@@ -97,7 +97,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
                   <IconCircleCheck className="h-4 w-4 text-white" size={16} />
                   8 of 12 tasks completed
                 </span>
-                <span className="bg-zinc-900 text-zinc-300 px-2 py-0.5 rounded-md text-[11px] font-mono">
+                <span className="bg-zinc-900 text-zinc-300 px-2 py-0.5 rounded-md text-xs font-mono">
                   Team Space
                 </span>
               </div>

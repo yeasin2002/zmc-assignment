@@ -29,7 +29,7 @@ export function TableRowSkeleton({ columns = 5 }: { columns?: number }) {
     <tr className="animate-pulse">
       {Array.from({ length: columns }).map((_, idx) => (
         <td key={idx} className="py-4 px-4 sm:px-6">
-          <Skeleton className="h-4 w-full max-w-[120px]" />
+          <Skeleton className="h-4 w-full max-w-30" />
         </td>
       ))}
     </tr>

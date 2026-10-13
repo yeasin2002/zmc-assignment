@@ -39,20 +39,20 @@ export function PriorityBadge({ priority }: { priority: TaskPriorityType }) {
   switch (normalized) {
     case 'HIGH':
       return (
-        <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-black text-white">
+        <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-black text-white">
           High
         </span>
       );
     case 'MEDIUM':
       return (
-        <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-zinc-100 text-zinc-800 border border-zinc-200">
+        <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-zinc-100 text-zinc-800 border border-zinc-200">
           Medium
         </span>
       );
     case 'LOW':
     default:
       return (
-        <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-zinc-50 text-zinc-600 border border-zinc-200">
+        <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-zinc-50 text-zinc-600 border border-zinc-200">
           Low
         </span>
       );

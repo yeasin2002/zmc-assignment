@@ -1,4 +1,5 @@
-import React from 'react';
+import type { DashboardStats } from '@/api/query-list/dashboard.query';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   IconAlertTriangle,
   IconChecklist,
@@ -7,8 +8,6 @@ import {
   IconFolderCheck,
   IconFolders,
 } from '@tabler/icons-react';
-import type { DashboardStats } from '@/api/query-list/dashboard.query';
-import { Skeleton } from '@/components/ui/skeleton';
 
 interface DashboardStatCardsProps {
   stats?: DashboardStats;
@@ -87,7 +86,7 @@ export function DashboardStatCards({ stats, isLoading }: DashboardStatCardsProps
             className="bg-white rounded-lg border border-zinc-200 p-4 space-y-3 shadow-2xs hover:border-zinc-300 transition-colors"
           >
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-500 font-medium">
+              <span className="text-xs font-mono uppercase tracking-wider text-zinc-500 font-medium">
                 {item.label}
               </span>
               <div className="h-7 w-7 rounded-md flex items-center justify-center bg-zinc-100 text-black border border-zinc-200">
@@ -98,7 +97,7 @@ export function DashboardStatCards({ stats, isLoading }: DashboardStatCardsProps
               <div className="text-2xl font-heading font-bold tracking-tight text-black">
                 {item.value}
               </div>
-              <p className="text-[11px] text-zinc-500 mt-0.5">{item.sub}</p>
+              <p className="text-xs text-zinc-500 mt-0.5">{item.sub}</p>
             </div>
           </div>
         );

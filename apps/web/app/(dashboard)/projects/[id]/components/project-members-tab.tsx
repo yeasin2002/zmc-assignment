@@ -106,7 +106,7 @@ export function ProjectMembersTab({
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs sm:text-sm">
-            <thead className="border-b border-zinc-200 text-black uppercase tracking-wider text-[11px] font-semibold font-mono">
+            <thead className="border-b border-zinc-200 text-black uppercase tracking-wider text-xs font-semibold font-mono">
               <tr>
                 <th className="py-3 px-4">User</th>
                 <th className="py-3 px-4">Email</th>
@@ -143,7 +143,7 @@ export function ProjectMembersTab({
                     </td>
                     <td className="py-3.5 px-4 text-right">
                       {isMemberOwner ? (
-                        <span className="text-[11px] text-zinc-400 font-medium">
+                        <span className="text-xs text-zinc-400 font-medium">
                           Project Owner
                         </span>
                       ) : isOwner ? (
@@ -155,7 +155,7 @@ export function ProjectMembersTab({
                           Remove
                         </button>
                       ) : (
-                        <span className="text-[11px] text-zinc-400">Member</span>
+                        <span className="text-xs text-zinc-400">Member</span>
                       )}
                     </td>
                   </tr>

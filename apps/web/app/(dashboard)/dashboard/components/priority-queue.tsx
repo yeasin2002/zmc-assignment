@@ -45,7 +45,7 @@ export function PriorityQueue({
           </p>
         </div>
         {urgentCount > 0 && (
-          <span className="text-[11px] font-mono font-semibold px-2 py-0.5 rounded-md bg-black text-white border border-black">
+          <span className="text-xs font-mono font-semibold px-2 py-0.5 rounded-md bg-black text-white border border-black">
             {urgentCount} Urgent
           </span>
         )}
